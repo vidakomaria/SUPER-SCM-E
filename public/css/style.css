@@ -1,0 +1,20 @@
+main {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+    height: -webkit-fill-available;
+    max-height: 100vh;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.btn-add{
+    background-color:rgb(10,147,150);
+    color: white;
+}
+
+.btn-add:hover{
+    background-color: rgba(10, 147, 150, 0.8);
+    color: white;
+}
+
