@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AkunSupplierController extends Controller
 {
@@ -78,23 +79,33 @@ class AkunSupplierController extends Controller
         $user = User::where('id',$id)->first();
         $rules =[
             'nama'      => 'required',
-//            'username'  => 'required|unique:users',
+            'email'      => 'required',
+            'tmptLahir' => 'required',
+            'tglLahir'  => 'required',
+            'noTelp'    => 'required',
+            'alamat'    => 'required',
+            'username'  => 'required',
             'password'  => 'required',
-//            'role'      => 'required',
         ];
-
+//
         if ($request->username != $user->username){
             $rules['username']= 'required|unique:users';
-        }
+        };
+        if ($request->email != $user->email){
+            $rules['email']= 'required|email:rfc|unique:users';
+        };
 
         $validatedData = $request->validate($rules);
-//        $validatedData['role'] = $request->role;
+        $no = Str::of($request->noTelp)->remove(0);
+        dd($no);
+        $validatedData['noTelp']    = "+62" . $request->noTelp;
         $validatedData['password'] = bcrypt($request->password);
+
 
         User::where('id',$id)
             ->update($validatedData);
 
-        return redirect('supplier')->with('success','Profil berhasil diubah');
+        return redirect('/supplier/akun/' . auth()->user()->id)->with('success','Profil berhasil diubah');
     }
 
     /**

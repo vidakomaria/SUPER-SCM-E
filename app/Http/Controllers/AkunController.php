@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AkunController extends Controller
 {
@@ -37,15 +38,21 @@ class AkunController extends Controller
     {
         $rules =[
             'nama'      => 'required',
+            'email'     => 'required|email:rfc|unique:users',
+            'tmptLahir' => 'required',
+            'tglLahir'  => 'required',
+            'noTelp'    => 'required',
+            'alamat'    => 'required',
             'username'  => 'required|unique:users',
             'password'  => 'required',
             'role'      => 'required',
         ];
 
         $validatedData = $request->validate($rules);
-        $validatedData['role'] = $request->role;
+        $validatedData['noTelp'] = "+62" . $request->noTelp;
         $validatedData['password'] = bcrypt($request->password);
 
+//        dd($validatedData);
         User::create($validatedData);
 
         return redirect('akun')->with('success','Akun berhasil dibuat');
@@ -59,7 +66,10 @@ class AkunController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::where('id',$id)->first();
+        return view('akun.show',[
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -70,19 +80,49 @@ class AkunController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::where('id',$id)->first();
+        return view('akun.edit',[
+            'user' => $user,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        //
+        $user = User::where('id',$id)->first();
+        $rules =[
+            'nama'      => 'required',
+            'email'      => 'required',
+            'tmptLahir' => 'required',
+            'tglLahir'  => 'required',
+            'noTelp'    => 'required',
+            'alamat'    => 'required',
+            'username'  => 'required',
+            'password'  => 'required',
+        ];
+//
+        if ($request->username != $user->username){
+            $rules['username']= 'required|unique:users';
+        };
+        if ($request->email != $user->email){
+            $rules['email']= 'required|email:rfc|unique:users';
+        };
+
+        $validatedData = $request->validate($rules);
+//        $no = Str::of($request->noTelp)->remove(0);
+//        $validatedData['noTelp']    =$request->noTelp;
+        $validatedData['password'] = bcrypt($request->password);
+//        dd($validatedData);
+        User::where('id',$id)
+            ->update($validatedData);
+
+        return redirect('/supplier/akun/' . auth()->user()->id)->with('success','Profil berhasil diubah');
     }
 
     /**

@@ -16,7 +16,7 @@
         <div class="row">
             @if($produks->count())
                 @foreach($produks as $produk)
-                    <div class="col-2">
+                    <div class="col-3">
                         <div class="card" >
                             <div class="col">
                                 <a href="/supplier/produk/{{ $produk->id }}/edit" class="text-decoration-none" style="color: black">

@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Livewire\Pemilik;
+
+use App\Models\DetailPesanan;
+use App\Models\Pesanan;
+use App\Models\StatusPesanan;
+use Livewire\Component;
+
+class PesananIndex extends Component
+{
+    public $status= 'all' ;
+
+    public function status($status)
+    {
+        $this->status = $status;
+    }
+
+    public function render()
+    {
+        if ($this->status == 'all'){
+            $pesanan = Pesanan::where('id_pembeli', auth()->user()->id)->get();
+        }
+        else{
+            $pesanan = Pesanan::where('id_pembeli', auth()->user()->id)
+                                ->where('id_status_pesanan', $this->status)->get();
+        };
+
+        return view('livewire.pemilik.pesanan-index',[
+            'pesanan'   => $pesanan,
+            'status'    => $this->status,
+        ]);
+    }
+}

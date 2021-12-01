@@ -26,6 +26,9 @@
     <!--Script Local-->
     <script src="/js/sidebars.js"></script>
 
+    <!-- Livewire -->
+    @livewireStyles
+
 </head>
 <body>
 <main>
@@ -40,5 +43,11 @@
         @yield('container')
     </div>
 </main>
+
+
+@stack('modals')
+@livewireScripts
+@stack('scripts')
+
 </body>
 </html>

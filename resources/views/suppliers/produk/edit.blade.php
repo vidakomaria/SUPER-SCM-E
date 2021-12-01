@@ -57,11 +57,7 @@
                                             <select class="form-select @error('id_kategori') is-invalid @enderror" name="id_kategori">
                                                 <option value="">Pilih Kategori</option>
                                                 @foreach($categories as $kategori)
-                                                    @if(old('id_kategori', $produk->kategori->id) == $produk->kategori->id)
-                                                        <option value="{{ $produk->kategori->id }}" selected>{{ ucwords($produk->kategori->kategori) }}</option>
-                                                    @else
-                                                        <option value="{{ $kategori->id }}">{{ ucwords($kategori->kategori) }}</option>
-                                                    @endif
+                                                    <option value="{{ $kategori->id }}">{{ ucwords($kategori->kategori) }}</option>
                                                 @endforeach
                                             </select>
                                             @error('id_kategori')

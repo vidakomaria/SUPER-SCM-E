@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\KategoriProduk;
+use App\Models\ProdukSupplier;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,6 +18,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             KategoriProdukSeeder::class,
+            UserSeeder::class,
+            ProdukSupplierSeeder::class,
+            StatusPesananSeeder::class,
         ]);
     }
 }

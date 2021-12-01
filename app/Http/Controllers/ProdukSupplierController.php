@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\EtalaseSupplier;
 use App\Models\KategoriProduk;
+use App\Models\Keranjang;
 use App\Models\ProdukSupplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProdukSupplierController extends Controller
 {
@@ -58,7 +60,7 @@ class ProdukSupplierController extends Controller
             $validatedData['image'] = $request->file('image')->store('produk-suppliers');
         }
         else {
-            $validatedData['image'] = "produk-suppliers/V97Cgpma9oLLC8gn2DTmyL8M41EcBL3faLazbvte.png";
+            $validatedData['image'] = "produk-suppliers/default.png";
         }
 
         $validatedData["id_kategori"]   = $request->id_kategori;
@@ -125,6 +127,10 @@ class ProdukSupplierController extends Controller
         ]);
 
         if ($request->file('image')){
+            if ($request->oldImage != "produk-suppliers/default.png"){
+                Storage::delete($request->oldImage);
+            }
+            //utk save img ke storage
             $validatedData['image'] = $request->file('image')->store('produk-suppliers');
         }
 
@@ -160,6 +166,12 @@ class ProdukSupplierController extends Controller
      */
     public function destroy(ProdukSupplier $produk)
     {
+        if ($produk->image != "produk-suppliers/default.png"){
+            Storage::delete($produk->image);
+        }
+
+        EtalaseSupplier::destroy('id_produk', $produk->id);
+        Keranjang::destroy('id_produk', $produk->id);
         ProdukSupplier::destroy($produk->id);
         return redirect('/supplier/produk')->with('success', 'Produk dihapus');
     }

@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.landing')
 @section('container')
     <div class="form-signin container-login bordered">
         @if(session()->has('success'))

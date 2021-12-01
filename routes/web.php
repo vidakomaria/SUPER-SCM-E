@@ -7,6 +7,14 @@ use App\Http\Controllers\AkunSupplierController;
 use App\Http\Controllers\ProdukSupplierController;
 use App\Http\Controllers\EtalaseSupplierController;
 use App\Http\Controllers\MarketController;
+use App\Http\Controllers\AkunPemilikController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\KeranjangController;
+use App\Http\Controllers\PesananController;
+use App\Http\Controllers\ProdukPemilik;
+use App\Http\Controllers\ProdukPemilikController;
+use App\Models\Checkout;
+use App\Models\Pesanan;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,10 +34,13 @@ Route::resource('akun', AkunController::class);
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
+//akun
+Route::resource('supplier/akun', AkunController::class);
+Route::resource('pemilik/akun', AkunController::class);
 //supplier akun
-Route::resource('supplier/akun', AkunSupplierController::class);
+//Route::resource('supplier/akun', AkunSupplierController::class);
 Route::get('/supplier', function (){
-    return view('suppliers.home.index');});
+    return view('home.index');});
 
 //supplier produk
 Route::resource('supplier/produk', ProdukSupplierController::class);
@@ -38,9 +49,27 @@ Route::resource('supplier/produk', ProdukSupplierController::class);
 Route::get('/supplier/etalase', [EtalaseSupplierController::class, 'tampil']);
 Route::get('/supplier/arsip', [EtalaseSupplierController::class, 'arsip']);
 
+//supplier pesanan
+Route::get('/supplier/pesanan', [PesananController::class, 'supplierDaftarPesanan']);
+Route::get('/supplier/pesanan/detail/{id}', [PesananController::class, 'supplierDetailPesanan']);
+
 //pemilik
 Route::get('/pemilik', function (){
     return view('pemilik.home.index');
 });
-//pasar
+//pemilik akun
+//Route::resource('/pemilik/akun', AkunPemilikController::class);
+//pemilik pasar
 Route::get('/pemilik/pasar', [MarketController::class, 'index']);
+Route::get('/pemilik/pasar/detail/{id}',[MarketController::class,'detail']);
+
+//keranjang
+Route::resource('/pemilik/keranjang', KeranjangController::class);
+//checkout
+Route::get('/pemilik/checkout', [CheckoutController::class, 'index']);
+//pesan
+Route::post('/pemilik/pesanan/pesan', [PesananController::class, 'create']);
+Route::get('/pemilik/pesanan', [PesananController::class, 'index']);
+Route::get('/pemilik/pesanan/detail/{id}', [PesananController::class, 'detail']);
+//pemilik produk
+Route::resource('/pemilik/produk', ProdukPemilikController::class);
