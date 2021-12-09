@@ -1,4 +1,4 @@
-@extends('suppliers.layouts.main')
+@extends('layouts.main')
 @section('container')
     <div class="m-0">
         <div class="container-fluid rounded-3 border bg-white mt-2 pt-2 shadow-sm" style="height: 50px">

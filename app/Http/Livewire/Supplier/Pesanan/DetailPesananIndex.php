@@ -32,8 +32,15 @@ class DetailPesananIndex extends Component
             ],
             [
                 'idStatus'          => 3,
-                'statusChange'      => 'dikirm',
-                'idStatusChange'    => 4
+                'statusChange'      => 'konfirmasi pembayaran',
+                'idStatusChange'    => 4,
+                'disable'           => 'disabled'
+            ],
+            [
+                'idStatus'          => 4,
+                'statusChange'      => 'Pesanan dkirim',
+                'idStatusChange'    => 5,
+                'disable'           => null
             ],
         ]);
     }
@@ -48,7 +55,18 @@ class DetailPesananIndex extends Component
         }
         elseif ($this->btn == "Save"){
 
+            if ($this->ongkir == null AND $pesanan->ongkir != 0){
+                $this->ongkir = $pesanan->ongkir;
+            }
+            if ($this->kodePengiriman == '' AND $pesanan->kodePengiriman != null){;
+                $this->kodePengiriman = $pesanan->kodePengiriman;
+            }
+            if ($this->pesan == '' AND $pesanan->pesan != ''){
+                $this->pesan = $pesanan->pesan;
+            }
+
             $currentStatus = $this->listStatus->where('idStatus', $pesanan->id_status_pesanan)->first();
+
             if ($currentStatus != null){
                 $updatePesanan = [
                     'id_status_pesanan' => $this->status,
@@ -62,6 +80,7 @@ class DetailPesananIndex extends Component
                 if ($this->ongkir == null){
                     $updatePesanan['ongkir'] = 0;
                 }
+//                dd($updatePesanan);
                 $pesanan->update($updatePesanan);
             }
 

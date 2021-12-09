@@ -25,7 +25,7 @@ class LoginController extends Controller
             'role'      => "supplier"])){
 
             $request->session()->regenerate();
-            return redirect()->intended('supplier');
+            return redirect()->intended('/supplier/produk');
         }
         elseif (Auth::attempt([
             'username'  => $credentials['username'],
@@ -33,7 +33,7 @@ class LoginController extends Controller
             'role'      => "pemilik_toko"])){
 
             $request->session()->regenerate();
-            return redirect()->intended('pemilik');
+            return redirect()->intended('/pemilik/pasar');
         }
 
         return back()->with('loginError', 'Username/Password Salah');

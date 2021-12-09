@@ -7,22 +7,40 @@
             </div>
         @endif
         <!-- status pesanan -->
-        <div class="mb-2">
-            <button type="button" wire:click="status('all')" class="btn  me-2 rounded-pill
-                @if($status == 'all') bg-warning @endif">Semua</button>
-            <button type="button" wire:click="status(1)" class="btn  me-2 rounded-pill
-                @if($status == 1) bg-warning @endif">Menunggu Konfirmasi</button>
-            <button type="button" wire:click="status(2)" class="btn  me-2 rounded-pill
-                @if($status == 2) bg-warning @endif">Belum Bayar</button>
-            <button type="button" wire:click="status(3)" class="btn  me-2 rounded-pill
-                @if($status == 3) bg-warning @endif">Diproses</button>
-            <button type="button" wire:click="status(4)" class="btn  me-2 rounded-pill
-                @if($status == 4) bg-warning @endif">Dikirim</button>
-            <button type="button" wire:click="status(5)" class="btn  me-2 rounded-pill
-                @if($status == 5) bg-warning @endif">Selesai</button>
-            <button type="button" wire:click="status(6)" class="btn  me-2 rounded-pill
-                @if($status == 6) bg-warning @endif">Dibatalkan</button>
-        </div>
+            <div class="mb-2 d-flex justify-content-between my-2 mx-2">
+                <button type="button" wire:click="status('all')" class="btn px-1 mx-0 rounded-pill
+                @if($status == 'all') text-info @endif">
+                    Semua <span class="badge rounded-pill bg-primary">{{ $countPesanan["all"] }}</span>
+                </button>
+                <button type="button" wire:click="status(1)" class="btn  mx-0 px-1 rounded-pill
+                @if($status == 1) text-info @endif">
+                    Menunggu Konfirmasi <span class="badge rounded-pill bg-primary">{{ $countPesanan["menunggu konfirmasi"] }}</span>
+                </button>
+                <button type="button" wire:click="status(2)" class="btn px-1 mx-0 rounded-pill
+                @if($status == 2) text-info @endif">
+                    Belum Bayar <span class="badge rounded-pill bg-primary">{{ $countPesanan["belum bayar"] }}</span>
+                </button>
+                <button type="button" wire:click="status(3)" class="btn px-1 mx-0 rounded-pill col-2
+                @if($status == 3) text-info @endif">
+                    Menunggu Konfirmasi Pembayaran <span class="badge rounded-pill bg-primary">{{ $countPesanan["menunggu konfirmasi pembayaran"] }}</span>
+                </button>
+                <button type="button" wire:click="status(4)" class="btn px-1 mx-0 rounded-pill
+                @if($status == 4) text-info @endif">
+                    Dikemas <span class="badge rounded-pill bg-primary">{{ $countPesanan["diproses"] }}</span>
+                </button>
+                <button type="button" wire:click="status(5)" class="btn px-1 mx-0 rounded-pill
+                @if($status == 5) text-info @endif">
+                    Dikirim <span class="badge rounded-pill bg-primary">{{ $countPesanan["dikirim"] }}</span>
+                </button>
+                <button type="button" wire:click="status(6)" class="btn px-1 mx-0 rounded-pill
+                @if($status == 6) text-info @endif">
+                    Selesai <span class="badge rounded-pill bg-primary">{{ $countPesanan["selesai"] }}</span>
+                </button>
+                <button type="button" wire:click="status(7)" class="btn px-1 mx-0 rounded-pill
+                @if($status == 7) text-info @endif">
+                    Dibatalkan <span class="badge rounded-pill bg-primary">{{ $countPesanan["dibatalkan"] }}</span>
+                </button>
+            </div>
 
         @if($pesanan->count())
             @foreach($pesanan as $pesanan)
@@ -50,7 +68,7 @@
                         <div class="row">
                             <div class="d-flex flex-row-reverse bd-highlight mb-2">
                                 <div class="bd-highlight">
-                                    <a href="/pemilik/pesanan/detail/{{ $pesanan->id }}">Detail Pesanan</a>
+                                    <a href="/pemilik/pesanan/{{ $pesanan->id }}">Detail Pesanan</a>
                                 </div>
                             </div>
 
@@ -62,7 +80,7 @@
             <div class="col mt-3">
                 <div class="card">
                     <div class="card-body align-center bg-light">
-                        <h6 class="card-title text-center">Tidak Ada Produk</h6>
+                        <h6 class="card-title text-center">Tidak Ada Pesanan</h6>
                     </div>
                 </div>
             </div>

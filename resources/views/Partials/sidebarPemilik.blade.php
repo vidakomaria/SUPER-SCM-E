@@ -1,13 +1,13 @@
 <div class="sidebar shadow">
-    <div class="p-3">
-        Nama Sistem
+    <div class="p-3 text-center">
+        <strong>SUPER</strong>
     </div>
     <ul class="nav flex-column align-items-stretch mb-auto ml-4">
         <div class="d-flex flex-column pt-4">
-            <li class="nav-item my-2">
-                <a href="/pemilik" class="nav-link text-white {{ Request::is('/') ? 'active' : '' }}" aria-current="page">
-                    <i class="bi bi-house-door me-3"></i>Home</a>
-            </li>
+{{--            <li class="nav-item my-2">--}}
+{{--                <a href="/pemilik" class="nav-link text-white {{ Request::is('/') ? 'active' : '' }}" aria-current="page">--}}
+{{--                    <i class="bi bi-house-door me-3"></i>Home</a>--}}
+{{--            </li>--}}
             <li class="nav-item my-2">
                 <a href="/pemilik/pasar" class="nav-link text-white {{ Request::is('pemilik/pasar*') ? 'active' : '' }}" aria-current="page">
                     <i class="bi bi-shop me-3"></i>Pasar</a>
@@ -25,7 +25,7 @@
                     <i class="bi bi-cart4 me-3"></i>Keranjang</a>
             </li>
             <li class="nav-item my-2">
-                <a href="#" class="nav-link text-white {{ Request::is('pemilik/kasir*') ? 'active' : '' }}" aria-current="page">
+                <a href="/pemilik/kasir" class="nav-link text-white {{ Request::is('pemilik/kasir*') ? 'active' : '' }}" aria-current="page">
                     <i class="bi bi-calculator me-3"></i>Kasir</a>
             </li>
         </div>

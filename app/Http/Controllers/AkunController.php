@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DaftarRekening;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -53,7 +54,14 @@ class AkunController extends Controller
         $validatedData['password'] = bcrypt($request->password);
 
 //        dd($validatedData);
-        User::create($validatedData);
+        $newUser = User::create($validatedData);
+
+        DaftarRekening::create([
+            'id_user'   => $newUser->id,
+            'no_rekening'   => 0,
+            'namaBank'      => '',
+            'namaAkunBank'  => '',
+        ]);
 
         return redirect('akun')->with('success','Akun berhasil dibuat');
     }
@@ -95,6 +103,7 @@ class AkunController extends Controller
      */
     public function update(Request $request, $id)
     {
+//        dd($request);
         $user = User::where('id',$id)->first();
         $rules =[
             'nama'      => 'required',
@@ -106,6 +115,13 @@ class AkunController extends Controller
             'username'  => 'required',
             'password'  => 'required',
         ];
+        if ($request->no_rekening != null OR $request->namaBank != null OR $request->namaAkunBank != null){
+            $validateRekening = $request->validate([
+                'no_rekening'   => 'required|numeric|min:0',
+                'namaBank'      => 'required',
+                'namaAkunBank'  => 'required',
+            ]);
+        }
 //
         if ($request->username != $user->username){
             $rules['username']= 'required|unique:users';
@@ -115,12 +131,15 @@ class AkunController extends Controller
         };
 
         $validatedData = $request->validate($rules);
-//        $no = Str::of($request->noTelp)->remove(0);
-//        $validatedData['noTelp']    =$request->noTelp;
+
         $validatedData['password'] = bcrypt($request->password);
 //        dd($validatedData);
         User::where('id',$id)
             ->update($validatedData);
+
+        if ($request->no_rekening != null){
+            DaftarRekening::where('id_user', $id)->update($validateRekening);
+        }
 
         return redirect('/supplier/akun/' . auth()->user()->id)->with('success','Profil berhasil diubah');
     }

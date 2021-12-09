@@ -1,5 +1,5 @@
 <div>
-    <form method="post" action="/pemilik/pesanan/pesan">
+    <form method="post" action="/pemilik/pesanan">
         @csrf
         @foreach($checkouts as $data)
             @php

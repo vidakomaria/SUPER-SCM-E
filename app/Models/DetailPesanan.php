@@ -13,7 +13,7 @@ class DetailPesanan extends Model
 
     public function produk()
     {
-        return $this->belongsTo(ProdukSupplier::class, 'id_produk');
+        return $this->belongsTo(ProdukSupplier::class, 'id_produk','id');
     }
 
     public function pesanan()

@@ -26,26 +26,24 @@
                     <form method="post" action="{{ $action . auth()->user()->id }}">
                         @method('put')
                         @csrf
-                        <table class="col-10">
+                        <table class="col-12">
                             <tr>
                                 <th scope="row" class=""><label for="nama" class="form-label">Nama</label></th>
-                                <td class="px-3">:</td>
-                                <td class="py-2">
+                                <td class="px-2">:</td>
+                                <td class="py-2 pe-3">
                                     <input type="text" class="form-control @error('nama') is-invalid @enderror"
-                                           name="nama" value="{{ $user->nama }}">
+                                           name="nama" value="{{ old('nama', $user->nama) }}">
                                     @error('nama')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                     @enderror
                                 </td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class=""><label for="email" class="form-label">Email</label></th>
-                                <td class="px-3">:</td>
+                                <th class="ps-5">Email</th>
+                                <td class="px-2">:</td>
                                 <td class="py-2">
                                     <input type="text" class="form-control @error('email') is-invalid @enderror"
-                                           name="email" value="{{ $user->email }}">
+                                           name="email" value="{{ old('email', $user->email) }}">
                                     @error('email')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -53,22 +51,34 @@
                                     @enderror
                                 </td>
                             </tr>
+
                             <tr>
-                                <th scope="row" class=""><label class="form-label">Tempat Tanggal Lahir</label></th>
-                                <td class="px-3">:</td>
-                                <td class="py-2">
-                                    <input type="text" class="form-control @error('tmptLahir') is-invalid @enderror"
-                                           name="tmptLahir" value="{{ $user->tmptLahir }}">
+                                <th scope="row" class=""><label class="form-label">Tempat, <br>Tanggal Lahir</label></th>
+                                <td class="px-2">:</td>
+                                <td class="pb-2 pe-3">
+                                    <input type="text" class="form-control my-2 @error('tmptLahir') is-invalid @enderror"
+                                           name="tmptLahir" value="{{ old('tmptLahir', $user->tmptLahir) }}">
                                     @error('tmptLahir')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                     @enderror
-                                </td>
-                                <td>
+
                                     <input type="date" class="form-control @error('tglLahir') is-invalid @enderror"
-                                           name="tglLahir" value="{{ $user->tglLahir }}">
+                                           name="tglLahir" value="{{ old('tglLahir', $user->tglLahir) }}">
                                     @error('tglLahir')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </td>
+                                <th scope="row" class="ps-5"><label for="alamat" class="form-label">Alamat</label></th>
+                                <td class="px-2">:</td>
+                                <td class="py-2">
+                                    <textarea name="alamat" class="form-control py-2 @error('alamat') is-invalid @enderror">{{ old('alamat', $user->alamat) }}</textarea>
+                                    {{--                                    <input type="text" class="form-control @error('alamat') is-invalid @enderror"--}}
+                                    {{--                                           name="alamat" value="{{ $user->alamat }}">--}}
+                                    @error('alamat')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -76,8 +86,50 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row" class=""><label for="noTelp" class="form-label">No. Telepon</label></th>
-                                <td class="px-3">:</td>
+                                <th scope="row" class=""><label for="namaBank" class="form-label">Nama Bank</label></th>
+                                <td class="px-2">:</td>
+                                <td class="py-2 pe-3">
+                                    <input type="text" class="form-control @error('namaBank') is-invalid @enderror"
+                                           name="namaBank" value="{{ old('namaBank', $user->rekening->namaBank) }}">
+                                    @error('namaBank')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </td>
+
+                                <th scope="row" class="ps-5"><label for="namaAkunBank" class="form-label">Nama Pemilik <br>Rekening</label></th>
+                                <td class="px-2">:</td>
+                                <td class="py-2">
+                                    <input type="text" class="form-control @error('namaAkunBank') is-invalid @enderror"
+                                           name="namaAkunBank" value="{{ old('namaAkunBank', $user->rekening->namaAkunBank) }}">
+                                    @error('namaAkunBank')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class=""><label for="no_rekening" class="form-label">Nomor Rekening</label></th>
+                                <td class="px-2">:</td>
+                                <td class="py-2 pe-3">
+                                    @if($user->rekening->no_rekening == 0)
+                                        <input type="number" class="form-control @error('no_rekening') is-invalid @enderror"
+                                           name="no_rekening" value="{{ old('no_rekening') }}">
+                                    @else
+                                        <input type="number" class="form-control @error('no_rekening') is-invalid @enderror"
+                                               name="no_rekening" value="{{ old('no_rekening', $user->rekening->no_rekening) }}">
+                                    @endif
+
+                                    @error('no_rekening')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </td>
+                                <th scope="row" class="ps-5"><label for="noTelp" class="form-label">No. Telepon</label></th>
+                                <td class="px-2">:</td>
                                 <td class="py-2">
                                     <input type="number" class="form-control @error('noTelp') is-invalid @enderror"
                                            name="noTelp" value="0{{ $user->noTelp }}">
@@ -89,22 +141,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row" class=""><label for="alamat" class="form-label">Alamat</label></th>
-                                <td class="px-3">:</td>
-                                <td class="py-2">
-                                    <input type="text" class="form-control @error('alamat') is-invalid @enderror"
-                                           name="alamat" value="{{ $user->alamat }}">
-                                    @error('alamat')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </td>
-                            </tr>
-                            <tr>
                                 <th scope="row" class=""><label for="username" class="form-label">Username</label></th>
-                                <td class="px-3">:</td>
-                                <td class="py-2">
+                                <td class="px-2">:</td>
+                                <td class="py-2 pe-3">
                                     <input type="text" class="form-control @error('username') is-invalid @enderror"
                                            name="username" value="{{ $user->username }}">
                                     @error('username')
@@ -113,10 +152,9 @@
                                     </div>
                                     @enderror
                                 </td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class=""><label for="password" class="form-label">Password</label></th>
-                                <td class="px-3">:</td>
+
+                                <th scope="row" class="ps-5"><label for="password" class="form-label">Password</label></th>
+                                <td class="px-2">:</td>
                                 <td class="py-2">
                                     <input type="password" class="form-control @error('password') is-invalid @enderror"
                                            name="password">

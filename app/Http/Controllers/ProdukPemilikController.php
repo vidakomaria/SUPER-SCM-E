@@ -48,6 +48,7 @@ class ProdukPemilikController extends Controller
             'id_kategori'   => 'required',
         ];
         $validatedData = $request->validate($rules);
+        $validatedData['id_pemilik'] = auth()->user()->id;
         ProdukPemilik::create($validatedData);
 
         return redirect('/pemilik/produk')->with('success', 'Produk Berhasil ditambahkan');
@@ -67,12 +68,13 @@ class ProdukPemilikController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ProdukPemilik  $produkPemilik
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProdukPemilik $produkPemilik)
+    public function edit(int $id)
     {
-        dd($produkPemilik->id);
+//        dd($id);
+        $produkPemilik = ProdukPemilik::where('id', $id)->first();
         return view('pemilik.produk.edit',[
             'produk'        => $produkPemilik,
             'categories'    => KategoriProduk::all(),
@@ -83,12 +85,22 @@ class ProdukPemilikController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ProdukPemilik  $produkPemilik
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProdukPemilik $produkPemilik)
+    public function update(Request $request, int $id)
     {
-        //
+        $rules = [
+            'nama_produk'   => 'required',
+            'harga'         => 'required|numeric|min:1',
+            'stok'          => 'required|numeric|min:1',
+            'id_kategori'   => 'required',
+        ];
+        $validatedData = $request->validate($rules);
+        $validatedData['id_pemilik'] = auth()->user()->id;
+        ProdukPemilik::where('id',$id)->update($validatedData);
+
+        return redirect('/pemilik/produk')->with('success', 'Produk Berhasil Diubah');
     }
 
     /**

@@ -22,6 +22,7 @@ class CreateProdukSupplierTable extends Migration
             $table->string('image')->nullable();
             $table->string('status');
             $table->text('deskripsi');
+            $table->integer('terjual');
             $table->foreignId('id_supplier')->constrained('users');
             $table->timestamps();
         });

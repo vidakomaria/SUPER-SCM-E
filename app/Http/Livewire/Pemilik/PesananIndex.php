@@ -16,8 +16,23 @@ class PesananIndex extends Component
         $this->status = $status;
     }
 
+    public function jmlh ()
+    {
+        $countPesanan = collect();
+        foreach (StatusPesanan::all() as $idStatus){
+            $status = Pesanan::where('id_pembeli', auth()->user()->id)
+                ->where('id_status_pesanan', $idStatus->id)->get();
+//            $countPesanan = push($status->count());
+            $countPesanan->put($idStatus->status,$status->count());
+        }
+        $pesananAll = Pesanan::where('id_pembeli', auth()->user()->id)->get();
+        $countPesanan->put("all", $pesananAll->count());
+        return $countPesanan;
+    }
+
     public function render()
     {
+        $countPesanan = $this->jmlh();
         if ($this->status == 'all'){
             $pesanan = Pesanan::where('id_pembeli', auth()->user()->id)->get();
         }
@@ -29,6 +44,7 @@ class PesananIndex extends Component
         return view('livewire.pemilik.pesanan-index',[
             'pesanan'   => $pesanan,
             'status'    => $this->status,
+            'countPesanan'  => $countPesanan,
         ]);
     }
 }

@@ -4,46 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Checkout;
 use App\Models\DetailPesanan;
+use App\Models\Keranjang;
 use App\Models\Pesanan;
 use App\Models\ProdukSupplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use PhpParser\Node\Stmt\Foreach_;
 
-class PesananController extends Controller
+class PesananController2 extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        if (auth()->user()->role == 'pemilik_toko'){
-            return view('pemilik.pesanan.index');
-        }
-        elseif (auth()->user()->role == 'supplier'){
-            return view('suppliers.pesanan.index');
-        }
+        return view('pemilik.pesanan.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function create(Request $request)
     {
         foreach ($request->pengiriman as $key => $value) {
             // dd($key);
@@ -59,8 +34,8 @@ class PesananController extends Controller
             $pesanan    = Pesanan::create([
                 'tanggal'       => Carbon::now(),
                 'id_pembeli'    => auth()->user()->id,
-                'total_produk'  => $checkout->count(),
                 'grand_total'   => $checkout->sum('subTotal'),
+                'total_produk'  => $checkout->count(),
                 'pengiriman'    => $value,
                 'alamat'        => $alamat,
                 'ongkir'        => 0,
@@ -73,18 +48,15 @@ class PesananController extends Controller
 //             dd($checkout);
 
             foreach ($checkout as $produk) {
-                $produkSupplier = ProdukSupplier::where('id', $produk->id_produk)->first();
-
                 DetailPesanan::create([
                     'id_pesanan'    => $pesanan->id,
                     'id_produk'     => $produk->id_produk,
                     'qty'           => $produk->qty,
-                    'harga'         => $produkSupplier->harga,
-                    'total'         => $produk->qty * $produkSupplier->harga,
+                    'subTotal'      => $produk->subTotal,
                 ]);
 
                 //update stok produk supplier
-//                $produkSupplier = ProdukSupplier::where('id', $produk->id_produk)->first();
+                $produkSupplier = ProdukSupplier::where('id', $produk->id_produk)->first();
 //                dd($produkSupplier);
                 $stok = $produkSupplier->stok - $produk->qty;
                 ProdukSupplier::where('id', $produk->id_produk)
@@ -100,13 +72,26 @@ class PesananController extends Controller
         return redirect('/pemilik/pesanan')->with('message', 'Produk dipesan');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function detail($id)
+    {
+        $pesanan = DetailPesanan::where('id_pesanan', $id)->get();
+        if (auth()->user()->role == 'supplier')
+            return view('supplier.pesanan.detail',[
+                'pesanan'   => $pesanan,
+            ]);
+        elseif (auth()->user()->role == 'pemilik_toko'){
+            return view('pemilik.pesanan.detail',[
+                'pesanan'   => $pesanan,
+            ]);
+        }
+    }
+
+    public function supplierDaftarPesanan()
+    {
+        return view('suppliers.pesanan.index');
+    }
+
+    public function detailPesanan($id)
     {
         $pesanan = DetailPesanan::where('id_pesanan', $id)->get();
         $pesananAll = Pesanan::where('id',$id)->first();
@@ -126,48 +111,8 @@ class PesananController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function updatePesanan()
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-//        dd($request->oldImage);
-        $validatedData = $request->validate([
-            'buktiPembayaran'  => 'image|file|max:1024',
-        ]);
-        if ($request->file('buktiPembayaran')){
-            Storage::delete($request->oldImage);
-            //utk save img ke storage
-            $validatedData['buktiPembayaran'] = $request->file('buktiPembayaran')->store('bukti-pembayaran');
-        }
-        $validatedData['id_status_pesanan'] = 3;
-        Pesanan::where('id',$id)->update($validatedData);
-        return redirect('/pemilik/pesanan/'.$id)->with('success', 'Bukti pembayaran berhasil diupload');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        dd('masuk sini');
     }
 }

@@ -24,6 +24,7 @@ class ProdukSupplierSeeder extends Seeder
             'status'        => 'tampil',
             'deskripsi'     => 'Harga per ikat',
             'id_supplier'   => 1,
+            'terjual'       => 0,
         ]);
         ProdukSupplier::create([
             'nama_produk'   => 'Sawi',
@@ -34,6 +35,7 @@ class ProdukSupplierSeeder extends Seeder
             'status'        => 'tampil',
             'deskripsi'     => 'Harga per ikat',
             'id_supplier'   => 1,
+            'terjual'       => 0,
         ]);
         //Supplier 2
         ProdukSupplier::create([
@@ -45,6 +47,7 @@ class ProdukSupplierSeeder extends Seeder
             'status'        => 'tampil',
             'deskripsi'     => 'Harga per Kilogram',
             'id_supplier'   => 2,
+            'terjual'       => 0,
         ]);
         ProdukSupplier::create([
             'nama_produk'   => 'Jeruk',
@@ -55,6 +58,7 @@ class ProdukSupplierSeeder extends Seeder
             'status'        => 'tampil',
             'deskripsi'     => 'Harga per Kilogram',
             'id_supplier'   => 2,
+            'terjual'       => 0,
         ]);
 
         //etalase

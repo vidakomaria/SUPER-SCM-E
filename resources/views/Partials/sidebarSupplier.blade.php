@@ -1,13 +1,13 @@
 <div class="sidebar shadow">
-    <div class="p-3">
-        Nama Sistem
+    <div class="p-3 text-center">
+        <strong>SUPER</strong>
     </div>
     <ul class="nav flex-column align-items-stretch mb-auto ml-4">
         <div class="d-flex flex-column pt-4">
-            <li class="nav-item my-2">
-                <a href="/supplier" class="nav-link text-white {{ Request::is('/') ? 'active' : '' }}" aria-current="page">
-                    <i class="bi bi-house-door me-3"></i>  Home</a>
-            </li>
+{{--            <li class="nav-item my-2">--}}
+{{--                <a href="/supplier" class="nav-link text-white {{ Request::is('/') ? 'active' : '' }}" aria-current="page">--}}
+{{--                    <i class="bi bi-house-door me-3"></i>  Home</a>--}}
+{{--            </li>--}}
             <li class="nav-item my-2">
                 <a href="/supplier/produk" class="nav-link text-white {{ Request::is('supplier/produk*') ? 'active' : '' }}" aria-current="page">
                     <i class="bi bi-box-seam me-3"></i>  Produk</a>

@@ -75,7 +75,7 @@
                                         Status Pesanan : {{ ucwords($pesanan->status->status) }}
                                     </div>
                                     <div class="mb-1">
-                                        <a href="/supplier/pesanan/detail/{{ $pesanan->id }}">Detail Pesanan</a>
+                                        <a href="/supplier/pesanan/{{ $pesanan->id }}">Detail Pesanan</a>
                                     </div>
                                 </div>
                             </div>

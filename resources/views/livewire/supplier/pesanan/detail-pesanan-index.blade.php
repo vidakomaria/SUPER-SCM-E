@@ -58,6 +58,7 @@
                 </div>
                 <div class="row m-2">
                     Bukti Pembayaran
+                    <img src="{{ asset('/storage/' . $pesananAll->buktiPembayaran) }}" class="img-preview img-fluid">
                 </div>
             </div>
             <div class="vr"></div>
@@ -69,7 +70,7 @@
                 @php
                     $currentStatus = $listStatus->where('idStatus',$pesananAll->id_status_pesanan)->first();
                     if($currentStatus != null){
-                        $able = $disable;
+                        $able = $currentStatus['disable'];
                     }
                     else{
                         $able = 'disabled';
@@ -82,7 +83,7 @@
                                 <td>Status Pesanan</td>
                                 <td>
                                     @if($currentStatus != null)
-                                        <select wire:model="status" class="form-select" {{ $able }}>
+                                        <select wire:model="status" class="form-select" {{ $disable }}>
                                             <option value="{{ $currentStatus['idStatus'] }}">{{ ucwords($value->pesanan->status->status) }}</option>
                                             <option value="{{ $currentStatus['idStatusChange'] }}">
                                                 {{ ucwords($currentStatus["statusChange"]) }}</option>
@@ -122,7 +123,7 @@
                                 <td>Pesan</td>
                                 <td>
                                     @if($currentStatus != null)
-                                        <textarea wire:model="pesan" class="form-control" {{ $able }}>{{ $pesananAll->pesan }}</textarea>
+                                        <textarea wire:model="pesan" class="form-control" {{ $able }} placeholder="{{ $pesananAll->pesan }}">{{ $pesananAll->pesan }}</textarea>
                                     @else
                                         <textarea wire:model="pesan" class="form-control" disabled placeholder="{{ $pesananAll->pesan }}">{{ $pesananAll->pesan }}</textarea>
                                     @endif
