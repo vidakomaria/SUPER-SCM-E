@@ -6,9 +6,9 @@
     </div>
 
     <!--Card-->
-    <livewire:pemilik.pesanan-index>
+    <livewire:pemilik.pesanan.pesanan-index>
 
-    </livewire:pemilik.pesan-index>
+    </livewire:pemilik.pesanan.pesanan-index>
 
 @endsection
 

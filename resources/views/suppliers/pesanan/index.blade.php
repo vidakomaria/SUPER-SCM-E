@@ -7,7 +7,7 @@
     </div>
 
     <!--Card-->
-    <livewire:supplier.pesanan-index>
+    <livewire:supplier.pesanan.pesanan-index>
 
-    </livewire:supplier.pesanan-index>
+    </livewire:supplier.pesanan.pesanan-index>
 @endsection

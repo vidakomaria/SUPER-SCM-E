@@ -26,20 +26,20 @@ class DetailPesananIndex extends Component
         $this->listStatus = collect([
             [
                 'idStatus'          => 1,
-                'statusChange'      => 'konfirmasi',
-                'idStatusChange'    => 2,
-                'disable'           => null,
+                'statusChange'      => ['konfirmasi'],
+                'idStatusChange'    => [2],
+                'disable'           => 'disabled',
             ],
             [
                 'idStatus'          => 3,
-                'statusChange'      => 'konfirmasi pembayaran',
-                'idStatusChange'    => 4,
-                'disable'           => 'disabled'
+                'statusChange'      => ['konfirmasi pembayaran','pembayaran ditolak'],
+                'idStatusChange'    => [4,8],
+                'disable'           => null
             ],
             [
                 'idStatus'          => 4,
-                'statusChange'      => 'Pesanan dkirim',
-                'idStatusChange'    => 5,
+                'statusChange'      => ['Pesanan dkirim'],
+                'idStatusChange'    => [5],
                 'disable'           => null
             ],
         ]);
@@ -48,46 +48,48 @@ class DetailPesananIndex extends Component
     public function edit()
     {
         $pesanan = Pesanan::where('id', $this->idPesanan)->first();
+        $this->disable = null;
+        $this->ongkir = $pesanan->ongkir;
+        $this->kodePengiriman = $pesanan->kodePengiriman;
+        $this->pesan = $pesanan->pesan;
+    }
 
-        if ($this->btn == "Edit"){
-            $this->disable = null;
-            $this->btn = "Save";
+    public function save()
+    {
+        $pesanan = Pesanan::where('id', $this->idPesanan)->first();
+
+        if ($this->ongkir == null AND $pesanan->ongkir != 0){
+            $this->ongkir = $pesanan->ongkir;
         }
-        elseif ($this->btn == "Save"){
+        if ($this->kodePengiriman == '' AND $pesanan->kodePengiriman != null){;
+            $this->kodePengiriman = $pesanan->kodePengiriman;
+        }
+        if ($this->pesan == '' AND $pesanan->pesan != ''){
+            $this->pesan = $pesanan->pesan;
+        }
 
-            if ($this->ongkir == null AND $pesanan->ongkir != 0){
-                $this->ongkir = $pesanan->ongkir;
-            }
-            if ($this->kodePengiriman == '' AND $pesanan->kodePengiriman != null){;
-                $this->kodePengiriman = $pesanan->kodePengiriman;
-            }
-            if ($this->pesan == '' AND $pesanan->pesan != ''){
-                $this->pesan = $pesanan->pesan;
-            }
+        $currentStatus = $this->listStatus->where('idStatus', $pesanan->id_status_pesanan)->first();
 
-            $currentStatus = $this->listStatus->where('idStatus', $pesanan->id_status_pesanan)->first();
-
-            if ($currentStatus != null){
-                $updatePesanan = [
-                    'id_status_pesanan' => $this->status,
-                    'ongkir'            => $this->ongkir,
-                    'kodePengiriman'    => $this->kodePengiriman,
-                    'pesan'             => $this->pesan,
-                ];
-                if ($this->status == null){
-                    $updatePesanan['id_status_pesanan'] = $pesanan->id_status_pesanan;
-                }
-                if ($this->ongkir == null){
-                    $updatePesanan['ongkir'] = 0;
-                }
+        if ($currentStatus != null){
+            $updatePesanan = [
+                'id_status_pesanan' => $this->status,
+                'ongkir'            => $this->ongkir,
+                'kodePengiriman'    => $this->kodePengiriman,
+                'pesan'             => $this->pesan,
+            ];
+            if ($this->status == null){
+                $updatePesanan['id_status_pesanan'] = $pesanan->id_status_pesanan;
+            }
+            if ($this->ongkir == null){
+                $updatePesanan['ongkir'] = 0;
+            }
 //                dd($updatePesanan);
-                $pesanan->update($updatePesanan);
-            }
+            $pesanan->update($updatePesanan);
+        }
 
 //            dd($updatePesanan);
-            $this->disable = 'disabled';
-            $this->btn = "Edit";
-        }
+        $this->disable = 'disabled';
+        $this->btn = "Edit";
     }
 
     public function render()

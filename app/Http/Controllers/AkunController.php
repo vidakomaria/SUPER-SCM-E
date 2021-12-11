@@ -56,12 +56,12 @@ class AkunController extends Controller
 //        dd($validatedData);
         $newUser = User::create($validatedData);
 
-        DaftarRekening::create([
-            'id_user'   => $newUser->id,
-            'no_rekening'   => 0,
-            'namaBank'      => '',
-            'namaAkunBank'  => '',
-        ]);
+//        DaftarRekening::create([
+//            'id_user'   => $newUser->id,
+//            'no_rekening'   => 0,
+//            'namaBank'      => '',
+//            'namaAkunBank'  => '',
+//        ]);
 
         return redirect('akun')->with('success','Akun berhasil dibuat');
     }

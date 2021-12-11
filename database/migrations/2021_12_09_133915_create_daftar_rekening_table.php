@@ -16,8 +16,8 @@ class CreateDaftarRekeningTable extends Migration
         Schema::create('daftar_rekening', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user')->constrained('users');
-            $table->integer('no_rekening');
-            $table->string('namaBank');
+            $table->string('no_rekening',30);
+            $table->string('namaBank',50);
             $table->string('namaAkunBank');
             $table->timestamps();
         });

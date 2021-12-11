@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Livewire\Pemilik;
+namespace App\Http\Livewire\Supplier\Pesanan;
 
-use App\Models\DetailPesanan;
 use App\Models\Pesanan;
 use App\Models\StatusPesanan;
 use Livewire\Component;
@@ -20,12 +19,12 @@ class PesananIndex extends Component
     {
         $countPesanan = collect();
         foreach (StatusPesanan::all() as $idStatus){
-            $status = Pesanan::where('id_pembeli', auth()->user()->id)
+            $status = Pesanan::where('id_supplier', auth()->user()->id)
                 ->where('id_status_pesanan', $idStatus->id)->get();
 //            $countPesanan = push($status->count());
             $countPesanan->put($idStatus->status,$status->count());
         }
-        $pesananAll = Pesanan::where('id_pembeli', auth()->user()->id)->get();
+        $pesananAll = Pesanan::where('id_supplier', auth()->user()->id)->get();
         $countPesanan->put("all", $pesananAll->count());
         return $countPesanan;
     }
@@ -34,14 +33,14 @@ class PesananIndex extends Component
     {
         $countPesanan = $this->jmlh();
         if ($this->status == 'all'){
-            $pesanan = Pesanan::where('id_pembeli', auth()->user()->id)->get();
+            $pesanan = Pesanan::where('id_supplier', auth()->user()->id)->get();
         }
         else{
-            $pesanan = Pesanan::where('id_pembeli', auth()->user()->id)
+            $pesanan = Pesanan::where('id_supplier', auth()->user()->id)
                                 ->where('id_status_pesanan', $this->status)->get();
         };
 
-        return view('livewire.pemilik.pesanan-index',[
+        return view('livewire.supplier.pesanan.pesanan-index',[
             'pesanan'   => $pesanan,
             'status'    => $this->status,
             'countPesanan'  => $countPesanan,
