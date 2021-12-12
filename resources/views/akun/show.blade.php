@@ -61,8 +61,8 @@
                 @if(auth()->user()->role == 'supplier')
                     <div class="vr"></div>
                     <div class="col-5">
-                        <livewire:akun-index>
-                        </livewire:akun-index>
+                        <livewire:rekening-index>
+                        </livewire:rekening-index>
                     </div>
                 @endif
             </div>

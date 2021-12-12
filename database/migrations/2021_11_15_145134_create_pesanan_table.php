@@ -17,16 +17,16 @@ class CreatePesananTable extends Migration
             $table->id();
             $table->date('tanggal');
             $table->foreignId('id_pembeli')->constrained('users');
-            $table->integer('total_produk');
-            $table->integer('grand_total');
-            $table->string('pengiriman');
-            $table->integer('ongkir');
-            $table->string('alamat');
-            $table->string('pesan');
-            $table->string('kodePengiriman');
-            $table->string('buktiPembayaran');
-            $table->foreignId('id_status_pesanan')->constrained('status_pesanan');
             $table->foreignId('id_supplier')->constrained('users');
+            $table->integer('jumlahProduk');
+            $table->integer('totalPesanan');
+            $table->string('catatan');
+            $table->foreignId('id_statusPesanan')->constrained('status_pesanan');
+//            $table->integer('ongkir');
+//            $table->string('pengiriman');
+//            $table->string('alamat');
+//            $table->string('kodePengiriman');
+//            $table->string('buktiPembayaran');
             $table->timestamps();
         });
     }

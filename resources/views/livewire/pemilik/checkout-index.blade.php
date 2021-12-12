@@ -1,90 +1,131 @@
 <div>
     <form method="post" action="/pemilik/pesanan">
         @csrf
-        @foreach($checkouts as $data)
-            @php
-                $totalSup = 0
-            @endphp
-            <div class="card mb-3 p-2">
-                <h6 class="card-title">{{ $data[0]->supplier->nama }}</h6>
-                @foreach($data as $produk)
-                    <div class="row g-0 border my-1">
-                        <div class="col-1 align-self-center mx-1 me-3">
-                            <img src="{{ asset('/storage/' . $produk->produk->image) }}" class="img-fluid rounded-start" >
-                        </div>
-                        <div class="col-md-8 m-2">
-                            <div class="row"><h6>{{ ucwords($produk->produk->nama_produk) }}</h6></div>
-                            <div class="row mt-2">
-                                <div class="col-2">Harga</div>
-                                <div class="col">Rp. {{ number_format($produk->produk->harga) }}</div>
-                            </div>
-                            <div class="row mt-2">
-                                <div class="col-2">Kuantitas</div>
-                                <div class="col">{{ $produk->qty }}</div>
-                            </div>
-                            <div class="row mt-2">
-                                <div class="col-2">Sub Total</div>
-                                <div class="col">{{ $produk->subTotal }}</div>
-                            </div>
-                        </div>
-                        @php
-                            $totalSup = $totalSup + $produk->subTotal
-                        @endphp
-                    </div>
-                @endforeach
-                <div class="row mt-2">
-                    <div class="col-3">Pilih Pengiriman</div>
-                    <div class="col">
-                        <select wire:model="pengiriman" name="pengiriman[{{ $produk->id_supplier }}]" class = "form-select  @error('pengiriman') is-invalid @enderror">
-                            <option value="">Pilih Pengiriman</option>
-                            <option value="ambil sendiri">Ambil Sendiri</option>
-                            <option value="diantar">Diantar</option>
-                        </select>
+        <div class="container-fluid rounded-3 border my-2 pb-3">
+            <div class="d-flex justify-content-between my-2 mx-0 p-0">
+                <!-- produk -->
+                <div class="col-5 me-0 pe-0">
+                    <strong class="mt-2">Detail Produk <hr></strong>
+                    <table>
+                        @foreach($checkouts as $produk)
+                            <tr>
+                                <td class="col-3 py-2 px-1">
+                                    <img src="{{ asset('/storage/' . $produk->produk->image) }}" class="img-fluid rounded-start" >
+                                </td>
+                                <td class="ps-2">
+                                    <div class="row">
+                                        <strong>{{ $produk->produk->nama_produk }}</strong>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4">Kuantitas</div>
+                                        <div class="col">{{ $produk->qty }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4">Sub Total</div>
+                                        <div class="col">{{ $produk->subTotal }}</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </table>
+                    <div class="row bg-light p-2 my-2">
+                        <div class="col fw-bold">Total Pesanan</div>
+                        <div class="col fw-bold">Rp. {{ number_format($checkouts->sum('subTotal')) }}</div>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-3">Alamat</div>
-                    <div class="col">
-                        @if($pengiriman == "diantar")
-                            <textarea class="form-control" name="alamat">{{ auth()->user()->alamat }}</textarea>
-                        @else
-                            <textarea class="form-control" disabled>-</textarea>
-                        @endif
-                    </div>
-                </div>
-                <div class=" col-8 g-0 border my-2 px-2">
-                    <div class="row">
-                        <div class="col-4 me-4 py-2">Total Pesanan</div>
-                        <div class="col py-2">Rp. {{ number_format($totalSup) }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4 me-4 py-2">Biaya ongkir</div>
-                        @if($pengiriman == 'diantar')
-                            <div class="col bg-light p-2 mx-1">*Biaya pengiriman akan diinfokan oleh supplier*</div>
-                        @else
-                            <div class="col">-</div>
-                        @endif
-                    </div>
-                    <div class="row">
-                        <div class="col-4 me-4 py-2">Total Pembayaran</div>
-                        <div class="col py-2">Rp. {{ number_format($totalSup) }}</div>
-                    </div>
-                    <div class="row">
-                        @if($pengiriman == 'diantar')
-                            <div class="col p-2 bg-light mx-1">*Total Pembayaran akan berubah sesuai biaya ongkir dari supplier*</div>
-                        @endif
-                    </div>
+                <div class="vr p-0 m-0"></div>
+
+                <!-- Pemesanan -->
+                <div class="col-5 me-0 pe-0">
+                    <strong class="mt-2">Detail Pemesanan <hr></strong>
+                    <table>
+                        <tr>
+                            <td><strong>Supplier</strong></td>
+                            <td class="px-1">:</td>
+                            <td class="pb-2">{{ $checkouts[0]->supplier->nama }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pilih Pengiriman</strong></td>
+                            <td class="px-1">:</td>
+                            <td class="py-2">
+                                <select wire:model="pengiriman" name="pengiriman" class = "form-select  @error('pengiriman') is-invalid @enderror">
+                                    <option value="">Pilih Pengiriman</option>
+                                    @foreach($opsiPengiriman as $opsiPengiriman)
+                                        @if(old('pengiriman') == $opsiPengiriman->id)
+                                            <option value="{{ $opsiPengiriman->id }}" selected>{{ ucwords($opsiPengiriman->pengiriman) }}</option>
+                                        @else
+                                            <option value="{{ $opsiPengiriman->id }}">{{ ucwords($opsiPengiriman->pengiriman) }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                @error('pengiriman')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Catatan</strong></td>
+                            <td class="px-1">:</td>
+                            <td class="py-2">
+                                <textarea name="catatan" class="form-control"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @if($pengiriman == 2)
+                                    <strong>Alamat Pengiriman</strong>
+                                @elseif($pengiriman == 1)
+                                    <strong>Alamat Pengambilan</strong>
+                                @else
+                                    <strong>Alamat</strong>
+                                @endif
+                            </td>
+                            <td class="px-1">:</td>
+                            <td class="py-2">
+                                @if($pengiriman == 2)
+                                    <textarea name="alamat" class="form-control @error('alamat') is-invalid @enderror" required>{{ auth()->user()->alamat }}</textarea>
+                                    @error('alamat')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                @elseif($pengiriman == 1)
+                                    <p class="fw-lighter fst-italic m-0 p-0">*Alamat Pengambilan akan diinformasikan oleh Supplier</p>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Biaya Pengiriman</strong></td>
+                            <td class="px-1">:</td>
+                            <td class="py-2">
+                                @if($pengiriman == 2)
+                                    <div class="col bg-light p-2 mx-1">
+                                        <p class="fw-lighter fst-italic m-1 p-0">*Biaya pengiriman akan diinfokan oleh supplier*</p></div>
+                                @else
+                                    <div class="col">-</div>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Pembayaran</strong></td>
+                            <td class="px-1">:</td>
+                            <td class="py-2">
+                                @if($pengiriman == 2)
+                                    Rp. {{ number_format($checkouts->sum('subTotal')) }}
+                                    <p class="fw-lighter fst-italic m-0 p-0 bg-light">*Total Pembayaran akan berubah sesuai dengan biaya pengiriman*</p>
+                                @else
+                                    Rp. {{ number_format($checkouts->sum('subTotal')) }}
+                                @endif
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-        @endforeach
-        <div class="row g-0 border my-1 p-2">
-            <div class="col-2 me-4"><strong>Total</strong></div>
-            <div class="col"><strong>Rp. {{ number_format($produk->sum('subTotal')) }}</strong></div>
         </div>
-{{--        <button type="submit">Pesan</button>--}}
-
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPesan">
+        <button type="button" class="btn btn-add" data-bs-toggle="modal" data-bs-target="#modalPesan">
             Pesan
         </button>
 
@@ -93,11 +134,11 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title text-center" id="exampleModalLabel">Konfirmasi Pesanan</h5>
+                        <h5 class="modal-title text-center" id="exampleModalLabel">Yakin untuk melakukan pemesanan?</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Yakin untuk melakukan pemesanan?
+                        Pastikan semua data yang diinputkan sudah benar
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

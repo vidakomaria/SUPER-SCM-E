@@ -1,7 +1,7 @@
 <div>
     <!--Detail Produk-->
-    <div class="container-fluid rounded-3 border mt-2">
-        <div class="d-flex justify-content-between my-2">
+    <div class="container-fluid rounded-3 border m-0 pt-2">
+        <div class="d-flex justify-content-between">
             <!-- produk -->
             <div class="col-5">
                 <!--Tabel detail produk-->
@@ -30,7 +30,7 @@
                                         <strong>Total Pesanan</strong>
                                     </div>
                                     <div class="col">
-                                        <strong>: Rp. {{ number_format($pesananAll->grand_total) }}</strong>
+                                        <strong>: Rp. {{ number_format($pesananAll->totalPesanan) }}</strong>
                                     </div>
                                 </div>
                             </td>
@@ -42,7 +42,7 @@
                                         <strong>Total Pembayaran</strong>
                                     </div>
                                     <div class="col">
-                                        <strong>: Rp. {{ number_format($pesananAll->grand_total + $pesananAll->ongkir) }}</strong>
+                                        <strong>: Rp. {{ number_format($pesananAll->totalPesanan + $pesananAll->pengiriman->ongkir) }}</strong>
                                     </div>
                                 </div>
                             </td>
@@ -59,7 +59,7 @@
                 <strong class="mt-2">Detail Pemesanan <hr></strong>
                 <!--Utk ubah-->
                 @php
-                    $currentStatus = $listStatus->where('idStatus',$pesananAll->id_status_pesanan)->first();
+                    $currentStatus = $listStatus->where('idStatus',$pesananAll->id_statusPesanan)->first();
                 @endphp
                 <div class="row table-responsive m-0">
                     <table class="table table-borderless m-0">
@@ -74,8 +74,6 @@
                                                 {{ ucwords($currentStatus['statusChange'][$key]) }}</option>
                                         @endforeach
                                     </select>
-{{--                                        <option value="{{ $currentStatus['idStatusChange'] }}">--}}
-{{--                                            {{ ucwords($currentStatus["statusChange"]) }}</option>--}}
                                 @else
                                     <select wire:model="status" class="form-select" disabled>
                                         <option>{{ ucwords($value->pesanan->status->status) }}</option>
@@ -84,20 +82,29 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Akun Rekening</td>
+                            <td>
+                                <input class="form-control bg-white" disabled value="{{ ucwords($rekening->no_rekening) }}">
+
+                                <p class="fw-lighter fst-italic m-0 p-0">Pembeli akan melakukan pembayaran sesuai dengan Akun Rekening</p>
+                                <a href="/supplier/akun/{{ auth()->user()->id }}">Edit Akun Rekening</a>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>Pengiriman</td>
-                            <td>{{ ucwords($value->pesanan->pengiriman) }}</td>
+                            <td>{{ ucwords($value->pesanan->pengiriman->metodePengiriman->pengiriman) }}</td>
                         </tr>
                         <tr>
                             <td>Biaya Pengiriman</td>
                             <td>
-                                @if($value->pesanan->pengiriman == "ambil sendiri")
+                                @if($pesananAll->pengiriman->id_pengiriman == 1)
                                     <input type="text" class="form-control" value="" disabled placeholder="-">
-                                @elseif($value->pesanan->pengiriman == "diantar")
-                                    @if($pesananAll->id_status_pesanan == 1)
-                                        <input type="number" wire:model="ongkir" class="form-control" {{ $disable }} placeholder="{{ ($pesananAll->ongkir) }}">
+                                @elseif($pesananAll->pengiriman->id_pengiriman == 2)
+                                    @if($pesananAll->id_statusPesanan == 1)
+                                        <input type="number" wire:model="ongkir" class="form-control" {{ $disable }} placeholder="{{ ($pesananAll->pengiriman->ongkir) }}">
                                         <p class="fw-lighter fst-italic m-0 p-0">* Biaya pengiriman akan diinformasikan kepada Pemesan</p>
                                     @else
-                                        <input type="number" wire:model="ongkir" class="form-control" disabled placeholder="{{ ($pesananAll->ongkir) }}">
+                                        <input type="number" wire:model="ongkir" class="form-control" disabled placeholder="{{ ($pesananAll->pengiriman->ongkir) }}">
                                     @endif
                                 @endif
                             </td>
@@ -105,38 +112,38 @@
                         <tr>
                             <td>Kode Pengiriman</td>
                             <td>
-                                @if($pesananAll->pengiriman == "ambil sendiri")
+                                @if($pesananAll->id_statusPesanan < 4)
                                     <input type="text" class="form-control" value="" disabled placeholder="-">
-                                @elseif($pesananAll->pengiriman == "diantar")
-                                    @if($pesananAll->id_status_pesanan == 4 )
-                                        <input type="text" wire:model="kodePengiriman" class="form-control" {{ $disable }}>
-                                    @else
-                                        <input type="text" class="form-control" disabled value="{{ $pesananAll->kodePengiriman }}">
-                                    @endif
+                                @elseif($pesananAll->id_statusPesanan == 4)
+                                    <input type="text" wire:model="kodePengiriman" class="form-control" {{ $disable }} placeholder="{{ $pesananAll->pengiriman->kodePengiriman }}">
+                                @else
+                                    <input type="text" class="form-control" disabled value="{{ $pesananAll->pengiriman->kodePengiriman }}">
                                 @endif
                             </td>
                         </tr>
                         <tr>
                             <td>Catatan</td>
                             <td>
-                                <textarea wire:model="pesan" class="form-control" {{ $disable }} placeholder="{{ $pesananAll->pesan }}">{{ $pesananAll->pesan }}</textarea>
+                                <textarea wire:model="catatan" class="form-control" {{ $disable }} placeholder="{{ $pesananAll->catatan }}">{{ $pesananAll->catatan }}</textarea>
                             </td>
                         </tr>
                         <tr>
-                            <td>Alamat Tujuan Pengiriman</td>
-                            <td>
-                                @if($pesananAll->pengiriman == "diantar")
-                                    {{ $pesananAll->alamat }}
-{{--                                    <textarea class="form-control bg-white" disabled>{{ $pesananAll->alamat }}</textarea>--}}
-                                @else
-                                    -
-                                @endif
-                            </td>
+                            @if($pesananAll->pengiriman->id_pengiriman == 1)
+                                <td>Alamat Pengambilan</td>
+                                <td>
+                                    <textarea class="form-control bg-white" {{ $disable }} placeholder="{{ $pesananAll->pengiriman->alamatPengambilan }}">{{ $pesananAll->pengiriman->alamatPengambilan }}</textarea>
+                                </td>
+                            @elseif($pesananAll->pengiriman->id_pengiriman == 2)
+                                <td>Alamat Pengiriman</td>
+                                <td>
+                                    {{ $pesananAll->pengiriman->alamatPengiriman }}
+                                </td>
+                            @endif
                         </tr>
                         <tr>
                             <td>Bukti Pembayaran</td>
                             <td>
-                                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modalBukti">
+                                <button type="button" class="btn text-decoration-underline" data-bs-toggle="modal" data-bs-target="#modalBukti">
                                     Lihat Bukti Pembayaran</button>
                             </td>
                         </tr>
@@ -179,8 +186,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body row">
-                    @if($pesananAll->buktiPembayaran)
-                        <img src="{{ asset('/storage/' . $pesananAll->buktiPembayaran) }}" class="img-preview img-fluid">
+                    @if($pesananAll->pembayaran->buktiPembayaran)
+                        <img src="{{ asset('/storage/' . $pesananAll->pembayaran->buktiPembayaran) }}" class="img-preview img-fluid">
                     @else
                         <strong class="fst-italic text-center">Belum Ada Bukti Pembayaran</strong>
                     @endif

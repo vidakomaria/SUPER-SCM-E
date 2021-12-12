@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ProdukSupplierSeeder::class,
             StatusPesananSeeder::class,
+            PengirimanSeeder::class,
         ]);
     }
 }

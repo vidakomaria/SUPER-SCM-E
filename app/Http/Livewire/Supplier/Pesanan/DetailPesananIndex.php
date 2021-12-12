@@ -2,8 +2,11 @@
 
 namespace App\Http\Livewire\Supplier\Pesanan;
 
+use App\Models\DetailPembayaran;
+use App\Models\DetailPengiriman;
 use App\Models\DetailPesanan;
 use App\Models\Pesanan;
+use App\Models\Rekening;
 use Livewire\Component;
 
 class DetailPesananIndex extends Component
@@ -14,7 +17,7 @@ class DetailPesananIndex extends Component
     //input
     public $status;
     public $ongkir;
-    public $pesan = '';
+    public $catatan = '';
     public $kodePengiriman ='';
 
     public $listStatus;
@@ -42,6 +45,12 @@ class DetailPesananIndex extends Component
                 'idStatusChange'    => [5],
                 'disable'           => null
             ],
+            [
+                'idStatus'          => 8,
+                'statusChange'      => ['konfirmasi pembayaran','pembayaran ditolak'],
+                'idStatusChange'    => [4,8],
+                'disable'           => null
+            ],
         ]);
     }
 
@@ -49,39 +58,44 @@ class DetailPesananIndex extends Component
     {
         $pesanan = Pesanan::where('id', $this->idPesanan)->first();
         $this->disable = null;
-        $this->ongkir = $pesanan->ongkir;
-        $this->kodePengiriman = $pesanan->kodePengiriman;
-        $this->pesan = $pesanan->pesan;
+        $this->ongkir = $pesanan->pengiriman->ongkir;
+        $this->kodePengiriman = $pesanan->pengiriman->kodePengiriman;
+        $this->catatan = $pesanan->catatan;
+//        dd($this->kodePengiriman);
     }
 
     public function save()
     {
         $pesanan = Pesanan::where('id', $this->idPesanan)->first();
 
-        if ($this->ongkir == null AND $pesanan->ongkir != 0){
-            $this->ongkir = $pesanan->ongkir;
-        }
-        if ($this->kodePengiriman == '' AND $pesanan->kodePengiriman != null){;
-            $this->kodePengiriman = $pesanan->kodePengiriman;
-        }
-        if ($this->pesan == '' AND $pesanan->pesan != ''){
-            $this->pesan = $pesanan->pesan;
-        }
-
-        $currentStatus = $this->listStatus->where('idStatus', $pesanan->id_status_pesanan)->first();
+        //apakah status sekarang ada di daftar status yg bisa diedit
+        $currentStatus = $this->listStatus->where('idStatus', $pesanan->id_statusPesanan)->first();
 
         if ($currentStatus != null){
             $updatePesanan = [
-                'id_status_pesanan' => $this->status,
+                'id_statusPesanan' => $this->status,
+                'catatan'             => $this->catatan,
+            ];
+
+            //update detail pengiriman
+            $detailPengiriman = [
                 'ongkir'            => $this->ongkir,
                 'kodePengiriman'    => $this->kodePengiriman,
-                'pesan'             => $this->pesan,
             ];
+            DetailPengiriman::where('id_pesanan', $pesanan->id)->update($detailPengiriman);
+
+            //update detail pembayaran
+            $rekening = Rekening::where('id_user', auth()->user()->id)->first();
+            $detailPembayaran = [
+                'id_detailRekening' => $rekening->id,
+            ];
+            DetailPembayaran::where('id_pesanan', $pesanan->id)->update($detailPembayaran);
+
             if ($this->status == null){
-                $updatePesanan['id_status_pesanan'] = $pesanan->id_status_pesanan;
+                $updatePesanan['id_statusPesanan'] = $pesanan->id_statusPesanan;
             }
             if ($this->ongkir == null){
-                $updatePesanan['ongkir'] = 0;
+                $detailPengiriman['ongkir'] = 0;
             }
 //                dd($updatePesanan);
             $pesanan->update($updatePesanan);
@@ -97,12 +111,14 @@ class DetailPesananIndex extends Component
         $this->addStatus();
 //        dd($this->listStatus->where('idStatus',1));
         $pesananAll = Pesanan::where('id',$this->idPesanan)->first();
+        $rekening = Rekening::where('id_user', auth()->user()->id)->first();
 
         $pesanan = DetailPesanan::where('id_pesanan' , $this->idPesanan)->get();
         return view('livewire.supplier.pesanan.detail-pesanan-index',[
             'pesanan'   => $pesanan,
             'listStatus' => $this->listStatus,
             'pesananAll'     => $pesananAll,
+            'rekening'   => $rekening,
         ]);
     }
 }

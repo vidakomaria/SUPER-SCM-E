@@ -7,7 +7,7 @@
                 / Detail Pesanan</h4>
     </div>
 
-    <div class="container-fluid mt-3 pt-2 mb-5">
+    <div class="container-fluid mt-3 mb-5 px-0">
         <livewire:supplier.pesanan.detail-pesanan-index :idPesanan="$id">
 
         </livewire:supplier.pesanan.detail-pesanan-index>

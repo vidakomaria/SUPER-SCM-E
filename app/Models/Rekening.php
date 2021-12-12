@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DaftarRekening extends Model
+class Rekening extends Model
 {
     use HasFactory;
-    protected $table = 'daftar_rekening';
+    protected $table = 'rekening';
     protected $guarded =[];
 
     public function pemilik()

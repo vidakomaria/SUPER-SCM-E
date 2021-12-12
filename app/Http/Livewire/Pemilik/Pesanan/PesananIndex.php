@@ -21,7 +21,7 @@ class PesananIndex extends Component
         $countPesanan = collect();
         foreach (StatusPesanan::all() as $idStatus){
             $status = Pesanan::where('id_pembeli', auth()->user()->id)
-                ->where('id_status_pesanan', $idStatus->id)->get();
+                ->where('id_statusPesanan', $idStatus->id)->get();
 //            $countPesanan = push($status->count());
             $countPesanan->put($idStatus->status,$status->count());
         }
@@ -38,7 +38,7 @@ class PesananIndex extends Component
         }
         else{
             $pesanan = Pesanan::where('id_pembeli', auth()->user()->id)
-                                ->where('id_status_pesanan', $this->status)->get();
+                                ->where('id_statusPesanan', $this->status)->get();
         };
 
         return view('livewire.pemilik.pesanan.pesanan-index',[

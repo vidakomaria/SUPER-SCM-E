@@ -2,11 +2,11 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\DaftarRekening;
+use App\Models\Rekening;
 use Livewire\Component;
 use function Livewire\str;
 
-class AkunIndex extends Component
+class RekeningIndex extends Component
 {
     public $btn = 'Edit';
     public $disable = 'disabled';
@@ -17,7 +17,7 @@ class AkunIndex extends Component
 
     public function edit()
     {
-        $dataRekening = DaftarRekening::where('id_user',auth()->user()->id)->first();
+        $dataRekening = Rekening::where('id_user',auth()->user()->id)->first();
 
         if ($this->btn == 'Edit'){
             $this->btn = 'Save';
@@ -33,13 +33,6 @@ class AkunIndex extends Component
             if ($this->namaPemilikRekening == null AND $dataRekening->namaAkunBank != null){
                 $this->namaPemilikRekening = $dataRekening->namaAkunBank;
             }
-//            $rules = [
-//                'noRekening'    => 'required',
-//                'namaBank'      => 'required',
-//                'namaPemilikRekening' => 'numeric|min:0',
-//            ];
-//
-//            $this->validate($rules);
 
             $newData = [
                 'no_rekening'   => $this->noRekening,
@@ -52,7 +45,7 @@ class AkunIndex extends Component
             }
             else{
                 $newData['id_user'] = auth()->user()->id;
-                DaftarRekening::create($newData);
+                Rekening::create($newData);
             }
             $this->btn = 'Edit';
             $this->disable = 'disabled';
@@ -63,14 +56,14 @@ class AkunIndex extends Component
     public function render()
     {
 //        $this->dataRekening();
-        $rekening = DaftarRekening::where('id_user', auth()->user()->id)->first();
+        $rekening = Rekening::where('id_user', auth()->user()->id)->first();
         if ($rekening){
             $dataRekening = $rekening;
         } else{
             $dataRekening = null;
         }
 
-        return view('livewire.akun-index',[
+        return view('livewire.rekening-index',[
             'rekening'  => $dataRekening,
         ]);
     }

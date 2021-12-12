@@ -38,10 +38,6 @@ Route::post('/logout', [LoginController::class, 'logout']);
 //akun
 Route::resource('supplier/akun', AkunController::class);
 Route::resource('pemilik/akun', AkunController::class);
-//supplier akun
-//Route::resource('supplier/akun', AkunSupplierController::class);
-//Route::get('/supplier', function (){
-//    return view('home.index');});
 
 //supplier produk
 Route::resource('supplier/produk', ProdukSupplierController::class);
@@ -60,8 +56,6 @@ Route::resource('/supplier/rekening', DaftarRekeningController::class);
 Route::get('/pemilik', function (){
     return view('home.index');
 });
-//pemilik akun
-//Route::resource('/pemilik/akun', AkunPemilikController::class);
 //pemilik pasar
 Route::get('/pemilik/pasar', [MarketController::class, 'index']);
 Route::get('/pemilik/pasar/detail/{id}',[MarketController::class,'detail']);
@@ -70,21 +64,13 @@ Route::get('/pemilik/pasar/detail/{id}',[MarketController::class,'detail']);
 Route::resource('/pemilik/keranjang', KeranjangController::class);
 //checkout
 Route::get('/pemilik/checkout', [CheckoutController::class, 'index']);
-//pesan
-//Route::post('/pemilik/pesanan/pesan', [PesananController2::class, 'create']);
-//Route::get('/pemilik/pesanan', [PesananController2::class, 'index']);
-//Route::get('/pemilik/pesanan/detail/{id}', [PesananController2::class, 'detail']);
+
 //pemilik produk
 Route::resource('/pemilik/produk', ProdukPemilikController::class);
 //pemilik pesanan
-//Route::get('/pemilik/pesanan/detail/{id}', [PesananController2::class, 'detailPesanan']);
-// bukti pembayaran
-//Route::post('/pemilik/pesanan', [PesananController::class, 'updatePesanan']);
 Route::resource('/pemilik/pesanan', PesananController::class);
 
 //Kasir
 Route::get('/pemilik/kasir', [KasirController::class,'index']);
 Route::get('/pemilik/kasir/nota/{id_penjualan}', [KasirController::class, 'nota']);
-//Route::get('/pemilik/kasir/nota/{id_penjualan}', function (){
-//    dd("Oke deh");
-//});
+

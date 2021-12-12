@@ -53,16 +53,7 @@ class AkunController extends Controller
         $validatedData['noTelp'] = "+62" . $request->noTelp;
         $validatedData['password'] = bcrypt($request->password);
 
-//        dd($validatedData);
-        $newUser = User::create($validatedData);
-
-//        DaftarRekening::create([
-//            'id_user'   => $newUser->id,
-//            'no_rekening'   => 0,
-//            'namaBank'      => '',
-//            'namaAkunBank'  => '',
-//        ]);
-
+        User::create($validatedData);
         return redirect('akun')->with('success','Akun berhasil dibuat');
     }
 

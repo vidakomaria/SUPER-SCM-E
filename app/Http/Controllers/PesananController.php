@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Checkout;
+use App\Models\DetailPembayaran;
+use App\Models\DetailPengiriman;
 use App\Models\DetailPesanan;
 use App\Models\Pesanan;
 use App\Models\ProdukSupplier;
@@ -45,58 +47,73 @@ class PesananController extends Controller
      */
     public function store(Request $request)
     {
-        foreach ($request->pengiriman as $key => $value) {
-            // dd($key);
-            $checkout   = Checkout::where('id_supplier', $key)->get();
-            // dd($checkout->count(), $key);
-            if ($value=='ambil sendiri'){
-                $alamat = "";
-            }
-            elseif ($value=='diantar') {
-                $alamat = $request->alamat;
-            }
+//        dd($request->pengiriman);
+        $rules['pengiriman'] = 'required';
 
-            $pesanan    = Pesanan::create([
-                'tanggal'       => Carbon::now(),
-                'id_pembeli'    => auth()->user()->id,
-                'total_produk'  => $checkout->count(),
-                'grand_total'   => $checkout->sum('subTotal'),
-                'pengiriman'    => $value,
-                'alamat'        => $alamat,
-                'ongkir'        => 0,
-                'pesan'         => '',
-                'kodePengiriman'    =>'',
-                'buktiPembayaran'   => '',
-                'id_status_pesanan'     => 1,
-                'id_supplier'   => $key,
-            ]);
-//             dd($checkout);
+//        if ($request->pengiriman = 2){
+//            $rules['alamat'] = 'required';
+//        }
+        $request->validate($rules);
 
-            foreach ($checkout as $produk) {
-                $produkSupplier = ProdukSupplier::where('id', $produk->id_produk)->first();
+        $checkout   = Checkout::all();
 
-                DetailPesanan::create([
-                    'id_pesanan'    => $pesanan->id,
-                    'id_produk'     => $produk->id_produk,
-                    'qty'           => $produk->qty,
-                    'harga'         => $produkSupplier->harga,
-                    'total'         => $produk->qty * $produkSupplier->harga,
-                ]);
-
-                //update stok produk supplier
-//                $produkSupplier = ProdukSupplier::where('id', $produk->id_produk)->first();
-//                dd($produkSupplier);
-                $stok = $produkSupplier->stok - $produk->qty;
-                ProdukSupplier::where('id', $produk->id_produk)
-                    ->update(['stok' => $stok]);
-            }
+        $newPesanan = [
+            'tanggal'       => Carbon::now(),
+            'id_pembeli'    => auth()->user()->id,
+            'id_supplier'   => $checkout[0]->id_supplier,
+            'jumlahProduk'  => $checkout->count(),
+            'totalPesanan'  => $checkout->sum('subTotal'),
+            'catatan'       => $request->catatan,
+            'id_statusPesanan'     => 1,
+        ];
+        if ($request->catatan == null){
+            $newPesanan['catatan']  = '';
         }
+            $pesanan = Pesanan::create($newPesanan);
+//        dd($newPesanan);
+
+        foreach ($checkout as $produk) {
+            $produkSupplier = ProdukSupplier::where('id', $produk->id_produk)->first();
+            $newDetailPesanan = [
+                'id_pesanan'    => $pesanan->id,
+                'id_produk'     => $produk->id_produk,
+                'qty'           => $produk->qty,
+                'harga'         => $produkSupplier->harga,
+            ];
+            DetailPesanan::create($newDetailPesanan);
+            //update stok produk supplier
+            $stok = $produkSupplier->stok - $produk->qty;
+            ProdukSupplier::where('id', $produk->id_produk)
+                ->update(['stok' => $stok]);
+        }
+
+        //detail pengiriman
+        $newDetailPengiriman =[
+            'id_pesanan'        => $pesanan->id,
+            'ongkir'            => 0,
+            'kodePengiriman'    => '',
+            'alamatPengiriman'  => '',
+            'alamatPengambilan' => '',
+            'id_pengiriman'     => $request->pengiriman,
+        ];
+        if ($request->pengiriman == 2){
+            //diantar
+            $newDetailPengiriman['alamatPengiriman']   = $request->alamat;
+        }
+        DetailPengiriman::create($newDetailPengiriman);
+
+        //detail pembayaran
+        $newDetailPembayaran =[
+            'id_pesanan'        => $pesanan->id,
+            'id_detailRekening' => null,
+            'buktiPembayaran'   => '',
+        ];
+        DetailPembayaran::create($newDetailPembayaran);
 
         $checkoutAll = Checkout::all();
         if ($checkoutAll){
             Checkout::truncate();
         }
-
         return redirect('/pemilik/pesanan')->with('message', 'Produk dipesan');
     }
 
@@ -146,17 +163,24 @@ class PesananController extends Controller
      */
     public function update(Request $request, $id)
     {
-//        dd($request->oldImage);
+        $pembayaran = DetailPembayaran::where('id_pesanan', $id)->first();
+//        dd($request->buktiPembayaran);
         $validatedData = $request->validate([
-            'buktiPembayaran'  => 'image|file|max:1024',
+            'buktiPembayaran'  => 'required|image|file|max:1024',
         ]);
-        if ($request->file('buktiPembayaran')){
+
+        if ($request->oldImage){
             Storage::delete($request->oldImage);
+        }
+        if ($request->file('buktiPembayaran')){
             //utk save img ke storage
             $validatedData['buktiPembayaran'] = $request->file('buktiPembayaran')->store('bukti-pembayaran');
         }
-        $validatedData['id_status_pesanan'] = 3;
-        Pesanan::where('id',$id)->update($validatedData);
+        DetailPembayaran::where('id_pesanan', $id)->update($validatedData);
+
+        $updateStatus  = ['id_statusPesanan' => 3];
+        Pesanan::where('id',$id)->update($updateStatus);
+
         return redirect('/pemilik/pesanan/'.$id)->with('success', 'Bukti pembayaran berhasil diupload');
     }
 

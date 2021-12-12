@@ -21,6 +21,10 @@
                 @if($status == 2) text-info @endif">
                 Belum Bayar <span class="badge rounded-pill bg-primary">{{ $countPesanan["belum bayar"] }}</span>
             </button>
+            <button type="button" wire:click="status(8)" class="btn px-1 mx-0 rounded-pill
+                @if($status == 8) text-info @endif">
+                Pembayaran Ditolak <span class="badge rounded-pill bg-primary">{{ $countPesanan["pembayaran ditolak"] }}</span>
+            </button>
             <button type="button" wire:click="status(3)" class="btn px-1 mx-0 rounded-pill col-2
                 @if($status == 3) text-info @endif">
                 Menunggu Konfirmasi Pembayaran <span class="badge rounded-pill bg-primary">{{ $countPesanan["menunggu konfirmasi pembayaran"] }}</span>
@@ -80,7 +84,7 @@
                                 </div>
                             </div>
                             <div class="row mx-2 p-2 bg-light justify-content-end">
-                                <strong class="text-end">Total Pembayaran : Rp. {{ number_format($pesanan->grand_total + $pesanan->ongkir) }}</strong>
+                                <strong class="text-end">Total Pembayaran : Rp. {{ number_format($pesanan->totalPesanan + $pesanan->pengiriman->ongkir) }}</strong>
                             </div>
                         </div>
                     </div>

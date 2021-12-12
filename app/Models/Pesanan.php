@@ -22,10 +22,18 @@ class Pesanan extends Model
     }
 
     public function status(){
-        return $this->belongsTo(StatusPesanan::class, 'id_status_pesanan');
+        return $this->belongsTo(StatusPesanan::class, 'id_statusPesanan');
     }
 
     public function detail(){
         return $this->belongsTo(DetailPesanan::class, 'id', 'id_pesanan');
+    }
+
+    public function pengiriman(){
+        return $this->belongsTo(DetailPengiriman::class, 'id', 'id_pesanan');
+    }
+
+    public function pembayaran(){
+        return $this->belongsTo(DetailPembayaran::class, 'id', 'id_pesanan');
     }
 }
