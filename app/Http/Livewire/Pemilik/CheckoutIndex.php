@@ -10,10 +10,6 @@ class CheckoutIndex extends Component
 {
     public $pengiriman;
 
-    public function cek()
-    {
-        dd($this->pengiriman[1]);
-    }
     public function render()
     {
         $data = Checkout::all();

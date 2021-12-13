@@ -50,5 +50,8 @@ class StatusPesananSeeder extends Seeder
             'status'        => 'permintaan pembatalan',
             'keterangan'    => 'pembatalan pesanan sudah dikirim, pembatalan menunggu persetujuan supplier',
         ]);
+        StatusPesanan::create([
+            'status'        => 'pengambilan',
+        ]);
     }
 }

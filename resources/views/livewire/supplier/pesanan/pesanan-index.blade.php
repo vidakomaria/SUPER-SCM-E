@@ -68,6 +68,12 @@
                         Dibatalkan ({{ $countPesanan["dibatalkan"] }})
                     </button>
                 </div>
+                <div class="mx-2">
+                    <button type="button" wire:click="status(10)" class="btn m-0 p-0
+                @if($status == 10) text-info @endif">
+                        Pengambilan ({{ $countPesanan["pengambilan"] }})
+                    </button>
+                </div>
             </div>
 
         <!-- Isi pesanan -->

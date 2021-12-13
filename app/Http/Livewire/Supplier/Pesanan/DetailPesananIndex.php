@@ -20,6 +20,7 @@ class DetailPesananIndex extends Component
     public $ongkir;
     public $catatan = '';
     public $kodePengiriman ='';
+    public $alamatAmbil;
 
     public $listStatus;
     public $disable ="disabled";
@@ -68,6 +69,12 @@ class DetailPesananIndex extends Component
         $this->ongkir = $pesanan->pengiriman->ongkir;
         $this->kodePengiriman = $pesanan->pengiriman->kodePengiriman;
         $this->catatan = $pesanan->catatan;
+
+        if ($pesanan->pengiriman->alamatPengambilan == '') {
+            $this->alamatAmbil = auth()->user()->alamat;
+        } else {
+            $this->alamatAmbil = $pesanan->pengiriman->alamatPengambilan;
+        }
 //        dd($this->kodePengiriman);
     }
 
@@ -81,14 +88,23 @@ class DetailPesananIndex extends Component
         if ($currentStatus != null){
             $updatePesanan = [
                 'id_statusPesanan' => $this->status,
-                'catatan'             => $this->catatan,
+                'catatan'          => $this->catatan,
             ];
+            if ($pesanan->pengiriman->id_pengiriman == 1){
+                if ($this->status == 4){
+                    $updatePesanan['id_statusPesanan'] = 10;
+//                    dd($updatePesanan);
+                }
+            }
 
             //update detail pengiriman
             $detailPengiriman = [
                 'ongkir'            => $this->ongkir,
                 'kodePengiriman'    => $this->kodePengiriman,
             ];
+            if ($pesanan->pengiriman->id_pengiriman == 1){
+                $detailPengiriman['alamatPengambilan'] = $this->alamatAmbil;
+            }
             DetailPengiriman::where('id_pesanan', $pesanan->id)->update($detailPengiriman);
 
             //update detail pembayaran

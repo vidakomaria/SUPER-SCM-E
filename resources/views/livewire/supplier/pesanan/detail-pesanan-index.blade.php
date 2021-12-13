@@ -131,7 +131,11 @@
                             @if($pesananAll->pengiriman->id_pengiriman == 1)
                                 <td>Alamat Pengambilan</td>
                                 <td>
-                                    <textarea class="form-control bg-white" {{ $disable }} placeholder="{{ $pesananAll->pengiriman->alamatPengambilan }}">{{ $pesananAll->pengiriman->alamatPengambilan }}</textarea>
+                                    @if($pesananAll->id_statusPesanan == 1)
+                                        <textarea wire:model="alamatAmbil" class="form-control bg-white" {{ $disable }} placeholder="{{ $pesananAll->pengiriman->alamatPengambilan }}"></textarea>
+                                    @else
+                                        <textarea class="form-control bg-white" disabled placeholder="{{ $pesananAll->pengiriman->alamatPengambilan }}"></textarea>
+                                    @endif
                                 </td>
                             @elseif($pesananAll->pengiriman->id_pengiriman == 2)
                                 <td>Alamat Pengiriman</td>

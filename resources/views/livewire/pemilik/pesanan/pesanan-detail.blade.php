@@ -57,7 +57,7 @@
             <div class="col-6">
                 <div class="d-flex justify-content-between">
                     <strong class="mt-2">Detail Pemesanan</strong>
-                    @if($pesananAll->id_statusPesanan == 5)
+                    @if($pesananAll->id_statusPesanan == 5 OR $pesananAll->id_statusPesanan == 10)
                         <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#modalSelesai">Pesanan Selesai</button>
                     @else
                         <button class="btn btn-add" disabled>Pesanan Selesai</button>
