@@ -34,7 +34,7 @@
                         <div class="row"><h3>{{ ucwords($produk->produk->nama_produk) }}</h3></div>
                         <div class="row">
                             <div class="col-2">Terjual</div>
-                            <div class="col"></div>
+                            <div class="col">{{ number_format($produk->produk->terjual) }}</div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-2">Harga</div>

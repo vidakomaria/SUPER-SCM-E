@@ -9,9 +9,6 @@
             <strong>{{ session('success') }}</strong>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-{{--        <div class="alert alert-success col-lg-8" role="alert">--}}
-{{--            {{ session('success') }}--}}
-{{--        </div>--}}
     @endif
 
     <div class="container-fluid mt-3 pt-2 ms-0 ps-0">

@@ -46,5 +46,9 @@ class StatusPesananSeeder extends Seeder
             'status'        => 'pembayaran ditolak',
             'keterangan'    => 'pembayaran ditolak, periksa nominal dan sesuaikan dengan total pembayaran',
         ]);
+        StatusPesanan::create([
+            'status'        => 'permintaan pembatalan',
+            'keterangan'    => 'pembatalan pesanan sudah dikirim, pembatalan menunggu persetujuan supplier',
+        ]);
     }
 }

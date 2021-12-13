@@ -7,44 +7,67 @@
             </div>
         @endif
 
-    <!-- status pesanan -->
-        <div class="mb-2 d-flex justify-content-between my-2 mx-2">
-            <button type="button" wire:click="status('all')" class="btn px-1 mx-0 rounded-pill
+        <!-- status pesanan -->
+        <div class="mb-2 d-flex flex-wrap my-2 mx-2">
+            <div class="mx-2">
+                <button type="button" wire:click="status('all')" class="btn m-0 p-0
                 @if($status == 'all') text-info @endif">
-                Semua <span class="badge rounded-pill bg-primary">{{ $countPesanan["all"] }}</span>
-            </button>
-            <button type="button" wire:click="status(1)" class="btn  mx-0 px-1 rounded-pill
+                    Semua ({{ $countPesanan["all"] }})</button>
+            </div>
+            <div class="mx-2">
+                <button type="button" wire:click="status(1)" class="btn m-0 p-0
                 @if($status == 1) text-info @endif">
-                Belum Dikonfirmasi <span class="badge rounded-pill bg-primary">{{ $countPesanan["menunggu konfirmasi"] }}</span>
-            </button>
-            <button type="button" wire:click="status(2)" class="btn px-1 mx-0 rounded-pill
+                    Belum Dikonfirmasi ({{ $countPesanan["menunggu konfirmasi"] }})
+                </button>
+            </div>
+            <div class="mx-2">
+                <button type="button" wire:click="status(2)" class="btn m-0 p-0
                 @if($status == 2) text-info @endif">
-                Belum Bayar <span class="badge rounded-pill bg-primary">{{ $countPesanan["belum bayar"] }}</span>
-            </button>
-            <button type="button" wire:click="status(8)" class="btn px-1 mx-0 rounded-pill
+                    Belum Bayar ({{ $countPesanan["belum bayar"] }})
+                </button>
+            </div>
+            <div class="mx-2">
+                <button type="button" wire:click="status(8)" class="btn m-0 p-0
                 @if($status == 8) text-info @endif">
-                Pembayaran Ditolak <span class="badge rounded-pill bg-primary">{{ $countPesanan["pembayaran ditolak"] }}</span>
-            </button>
-            <button type="button" wire:click="status(3)" class="btn px-1 mx-0 rounded-pill col-2
+                    Pembayaran Ditolak ({{ $countPesanan["pembayaran ditolak"] }})
+                </button>
+            </div>
+            <div class="mx-2">
+                <button type="button" wire:click="status(3)" class="btn m-0 p-0
                 @if($status == 3) text-info @endif">
-                Menunggu Konfirmasi Pembayaran <span class="badge rounded-pill bg-primary">{{ $countPesanan["menunggu konfirmasi pembayaran"] }}</span>
-            </button>
-            <button type="button" wire:click="status(4)" class="btn px-1 mx-0 rounded-pill
+                    Menunggu Konfirmasi Pembayaran ({{ $countPesanan["menunggu konfirmasi pembayaran"] }})
+                </button>
+            </div>
+            <div class="mx-2">
+                <button type="button" wire:click="status(4)" class="btn m-0 p-0
                 @if($status == 4) text-info @endif">
-                Dikemas <span class="badge rounded-pill bg-primary">{{ $countPesanan["diproses"] }}</span>
-            </button>
-            <button type="button" wire:click="status(5)" class="btn px-1 mx-0 rounded-pill
+                    Dikemas ({{ $countPesanan["diproses"] }})
+                </button>
+            </div>
+            <div class="mx-2">
+                <button type="button" wire:click="status(5)" class="btn m-0 p-0
                 @if($status == 5) text-info @endif">
-                Dikirim <span class="badge rounded-pill bg-primary">{{ $countPesanan["dikirim"] }}</span>
-            </button>
-            <button type="button" wire:click="status(6)" class="btn px-1 mx-0 rounded-pill
+                    Dikirim ({{ $countPesanan["dikirim"] }})
+                </button>
+            </div>
+            <div class="mx-2">
+                <button type="button" wire:click="status(6)" class="btn m-0 p-0
                 @if($status == 6) text-info @endif">
-                Selesai <span class="badge rounded-pill bg-primary">{{ $countPesanan["selesai"] }}</span>
-            </button>
-            <button type="button" wire:click="status(7)" class="btn px-1 mx-0 rounded-pill
+                    Selesai ({{ $countPesanan["selesai"] }})
+                </button>
+            </div>
+            <div class="mx-2">
+                <button type="button" wire:click="status(9)" class="btn m-0 p-0
+                @if($status == 9) text-info @endif">
+                    Permintaan Pembatalan ({{ $countPesanan["permintaan pembatalan"] }})
+                </button>
+            </div>
+            <div class="mx-2">
+                <button type="button" wire:click="status(7)" class="btn m-0 p-0
                 @if($status == 7) text-info @endif">
-                Dibatalkan <span class="badge rounded-pill bg-primary">{{ $countPesanan["dibatalkan"] }}</span>
-            </button>
+                    Dibatalkan ({{ $countPesanan["dibatalkan"] }})
+                </button>
+            </div>
         </div>
 
         <!-- Isi pesanan -->

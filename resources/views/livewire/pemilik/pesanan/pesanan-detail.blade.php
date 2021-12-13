@@ -116,12 +116,21 @@
                             <th class="pe-2">Bukti Pembayaran</th>
                             <td>:</td>
                             <td>
-                                <button type="button" class="btn text-decoration-underline" data-bs-toggle="modal" data-bs-target="#modalBuktiPembayaran">
+                                <button type="button" class="btn text-decoration-underline ps-0" data-bs-toggle="modal" data-bs-target="#modalBuktiPembayaran">
                                     Lihat Bukti Pembayaran
                                 </button>
-                                <button type="button" class="btn text-decoration-underline" data-bs-toggle="modal" data-bs-target="#modalDetailPembayaran">
+                                <button type="button" class="btn text-decoration-underline ps-0 pb-0" data-bs-toggle="modal" data-bs-target="#modalDetailPembayaran">
                                     Rincian Tujuan Pembayaran
                                 </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="pt-0 text-center">
+                                @if($pesananAll->id_statusPesanan < 5)
+                                    <button type="button" class="btn text-decoration-underline text-danger p-0 text-center" data-bs-toggle="modal" data-bs-target="#modalBatalPesan">Batalkan Pesanan</button>
+                                @else
+                                    <button type="button" class="btn text-decoration-underline text-danger p-0 text-center" disabled>Batalkan Pesanan</button>
+                                @endif
                             </td>
                         </tr>
                     </table>
@@ -269,6 +278,30 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" wire:click="selesaiPesanan" class="btn btn-primary">Selesai</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Batal Pesanan-->
+    <div class="modal fade" id="modalBatalPesan" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="fw-bolder">Batalkan Pesanan</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body justify-content-row text-center">
+                    <p class="text-center">
+                        Yakin untuk membatalkan pesanan?
+                    </p>
+                    <p class="fw-normal fst-italic bg-white p-2">
+                        Pesanan yang dibatalkan menunggu konfirmasi dari supplier
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" wire:click="batalPesanan" class="btn btn-primary">Batalkan</button>
                 </div>
             </div>
         </div>

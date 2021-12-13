@@ -41,6 +41,7 @@
                             <div class="row">Rp. {{ number_format($produk->produk->harga) }}</div>
 
                             <div class="row">Stok  : {{ $produk->produk->stok }}</div>
+                            <div class="row">Terjual  : {{ $produk->produk->terjual }}</div>
 
                             <div class="row align-middle justify-content-center mt-2">
                                 ( {{ $produk->supplier->nama }} )

@@ -6,6 +6,7 @@ use App\Models\DetailPembayaran;
 use App\Models\DetailPengiriman;
 use App\Models\DetailPesanan;
 use App\Models\Pesanan;
+use App\Models\ProdukSupplier;
 use App\Models\Rekening;
 use Livewire\Component;
 
@@ -49,6 +50,12 @@ class DetailPesananIndex extends Component
                 'idStatus'          => 8,
                 'statusChange'      => ['konfirmasi pembayaran','pembayaran ditolak'],
                 'idStatusChange'    => [4,8],
+                'disable'           => null
+            ],
+            [
+                'idStatus'          => 9,
+                'statusChange'      => ['konfirmasi pembatalan'],
+                'idStatusChange'    => [7],
                 'disable'           => null
             ],
         ]);
@@ -97,7 +104,17 @@ class DetailPesananIndex extends Component
             if ($this->ongkir == null){
                 $detailPengiriman['ongkir'] = 0;
             }
-//                dd($updatePesanan);
+
+            //update produk jika dibatalkan
+            if ($this->status == 7){
+                $detailPesanan = DetailPesanan::where('id_pesanan',$this->idPesanan)->get();
+                foreach ($detailPesanan as $produk){
+                    $produkSupplier = ProdukSupplier::where('id', $produk->id_produk)->first();
+                    $produkSupplier->update([
+                        'stok'  => $produkSupplier->stok + $produk->qty,
+                    ]);
+                }
+            }
             $pesanan->update($updatePesanan);
         }
 

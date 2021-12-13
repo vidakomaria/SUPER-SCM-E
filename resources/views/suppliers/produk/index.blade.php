@@ -47,6 +47,10 @@
                                     <div class="col">Stok  : {{ $produk->stok }}
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col">Terjual  : {{ $produk->terjual }}
+                                    </div>
+                                </div>
                                 <div class="row align-middle">
                                     <div class="col mt-1">
                                         <a href="/supplier/produk/{{ $produk->id }}/edit" class="text-decoration-none" style="color: black">

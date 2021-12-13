@@ -38,6 +38,11 @@ class PesananDetail extends Component
         return $this->redirect('/pemilik/pesanan/'.$this->idPesanan);
     }
 
+    public function batalPesanan(){
+        Pesanan::where('id', $this->idPesanan)->update(['id_statusPesanan'  => 9]);
+        return $this->redirect('/pemilik/pesanan/'.$this->idPesanan);
+    }
+
     public function render()
     {
 //        dd($this->idPesanan);
