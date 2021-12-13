@@ -65,6 +65,7 @@ class ProdukSupplierController extends Controller
 
         $validatedData["id_kategori"]   = $request->id_kategori;
         $validatedData['id_supplier']   = auth()->user()->id;
+        $validatedData['terjual']       = 0;
 
         ProdukSupplier::create($validatedData);
 

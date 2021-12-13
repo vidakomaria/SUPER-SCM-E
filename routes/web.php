@@ -5,7 +5,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\AkunSupplierController;
 use App\Http\Controllers\ProdukSupplierController;
-use App\Http\Controllers\EtalaseSupplierController;
 use App\Http\Controllers\MarketController;
 use App\Http\Controllers\AkunPemilikController;
 use App\Http\Controllers\CheckoutController;
@@ -41,10 +40,6 @@ Route::resource('pemilik/akun', AkunController::class);
 
 //supplier produk
 Route::resource('supplier/produk', ProdukSupplierController::class);
-
-//supplier etalase
-Route::get('/supplier/etalase', [EtalaseSupplierController::class, 'tampil']);
-Route::get('/supplier/arsip', [EtalaseSupplierController::class, 'arsip']);
 
 //supplier pesanan
 Route::resource('/supplier/pesanan', PesananController::class);

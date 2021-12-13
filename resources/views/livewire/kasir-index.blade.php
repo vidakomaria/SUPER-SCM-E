@@ -115,8 +115,8 @@
                     <h5>Apakah anda ingin mencetak?</h5>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" wire:click="nota" class="btn btn-orange">IYA</button>
-                    <button type="button" wire:click="noNota" class="btn btn-green" data-bs-dismiss="modal">TIDAK</button>
+                    <button type="button" wire:click="nota" class="btn">CETAK</button>
+                    <button type="button" wire:click="noNota" class="btn" data-bs-dismiss="modal">TIDAK</button>
                 </div>
             </div>
         </div>

@@ -30,19 +30,22 @@ class KasirIndex extends Component
         $produk     = ProdukPemilik::where('id',$this->id_produk)->first();
         $transaksi = TransaksiKasir::where('id_produk', $this->id_produk)->first();
 
+//        dd($produk->stok);
         $this->validate(['id_produk' => 'required']);
 
         //cek stok
 
         if ($transaksi){
-            $this->validate(['qty' => 'required|min:1|numeric|max:'.($produk->stok - $transaksi->qty)]);
+            $this->validate(['qty' => 'required|gte:1|numeric|max:'.($produk->stok - $transaksi->qty)]);
             $updateTransaksi =[
                 'qty'       => $transaksi->qty + $this->qty,
                 'sub_total' => ($transaksi->qty + $this->qty) * $produk->harga,
             ];
             $transaksi->update($updateTransaksi);
-        } else{
-            $this->validate(['qty' => 'required|min:1|max:'.$produk->stok]);
+        }
+        else{
+//            dd('masuk else');
+            $this->validate(['qty' => 'required|gte:1|max:'.$produk->stok]);
             $newTransaksi   = [
                 'id_produk'     => $this->id_produk,
                 'qty'           => $this->qty,
@@ -80,6 +83,10 @@ class KasirIndex extends Component
                 'total'         => $value->sub_total,
             ];
             DetailPenjualanPemilik::create($newDetail);
+            $produkPemilik = ProdukPemilik::where('id',$value->id_produk)->first();
+            $produkPemilik->update([
+                'stok'  =>  ($produkPemilik->stok - $value->qty),
+            ]);
         }
         TransaksiKasir::truncate();
         $this->clear();
