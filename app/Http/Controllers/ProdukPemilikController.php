@@ -106,11 +106,12 @@ class ProdukPemilikController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ProdukPemilik  $produkPemilik
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProdukPemilik $produkPemilik)
+    public function destroy($id)
     {
-        //
+        ProdukPemilik::destroy('id',$id);
+        return redirect('/pemilik/produk')->with('success', 'Produk berhasil dihapus');
     }
 }

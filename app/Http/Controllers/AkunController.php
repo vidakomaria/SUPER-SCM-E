@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DaftarRekening;
+use App\Models\Rekening;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -79,6 +79,7 @@ class AkunController extends Controller
      */
     public function edit($id)
     {
+        // dd('masuk sini');
         $user = User::where('id',$id)->first();
         return view('akun.edit',[
             'user' => $user,
@@ -106,13 +107,13 @@ class AkunController extends Controller
             'username'  => 'required',
             'password'  => 'required',
         ];
-        if ($request->no_rekening != null OR $request->namaBank != null OR $request->namaAkunBank != null){
-            $validateRekening = $request->validate([
-                'no_rekening'   => 'required|numeric|min:0',
-                'namaBank'      => 'required',
-                'namaAkunBank'  => 'required',
-            ]);
-        }
+        // if ($request->no_rekening != null OR $request->namaBank != null OR $request->namaAkunBank != null){
+        //     $validateRekening = $request->validate([
+        //         'no_rekening'   => 'required|numeric|min:0',
+        //         'namaBank'      => 'required',
+        //         'namaAkunBank'  => 'required',
+        //     ]);
+        // }
 //
         if ($request->username != $user->username){
             $rules['username']= 'required|unique:users';
@@ -128,9 +129,9 @@ class AkunController extends Controller
         User::where('id',$id)
             ->update($validatedData);
 
-        if ($request->no_rekening != null){
-            DaftarRekening::where('id_user', $id)->update($validateRekening);
-        }
+        // if ($request->no_rekening != null){
+        //     DaftarRekening::where('id_user', $id)->update($validateRekening);
+        // }
 
         return redirect('/supplier/akun/' . auth()->user()->id)->with('success','Profil berhasil diubah');
     }

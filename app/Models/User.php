@@ -44,8 +44,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function rekening()
-    {
-        return $this->belongsTo(DaftarRekening::class,'id', 'id_user');
-    }
+    // public function rekening()
+    // {
+    //     return $this->belongsTo(DaftarRekening::class,'id', 'id_user');
+    // }
 }

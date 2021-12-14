@@ -49,7 +49,7 @@
                         @endforeach
                     </div>
                 @endforeach
-                <button type="submit">Checkout</button>
+                <button type="submit" class="btn btn-add mb-3">Checkout</button>
             </form>
         @else
             <div class="col mt-3">

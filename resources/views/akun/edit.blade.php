@@ -85,52 +85,11 @@
                                     @enderror
                                 </td>
                             </tr>
+
                             <tr>
-                                <th scope="row" class=""><label for="namaBank" class="form-label">Nama Bank</label></th>
+                                <th scope="row" class=""><label for="noTelp" class="form-label">No. Telepon</label></th>
                                 <td class="px-2">:</td>
                                 <td class="py-2 pe-3">
-                                    <input type="text" class="form-control @error('namaBank') is-invalid @enderror"
-                                           name="namaBank" value="{{ old('namaBank', $user->rekening->namaBank) }}">
-                                    @error('namaBank')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </td>
-
-                                <th scope="row" class="ps-5"><label for="namaAkunBank" class="form-label">Nama Pemilik <br>Rekening</label></th>
-                                <td class="px-2">:</td>
-                                <td class="py-2">
-                                    <input type="text" class="form-control @error('namaAkunBank') is-invalid @enderror"
-                                           name="namaAkunBank" value="{{ old('namaAkunBank', $user->rekening->namaAkunBank) }}">
-                                    @error('namaAkunBank')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class=""><label for="no_rekening" class="form-label">Nomor Rekening</label></th>
-                                <td class="px-2">:</td>
-                                <td class="py-2 pe-3">
-                                    @if($user->rekening->no_rekening == 0)
-                                        <input type="number" class="form-control @error('no_rekening') is-invalid @enderror"
-                                           name="no_rekening" value="{{ old('no_rekening') }}">
-                                    @else
-                                        <input type="number" class="form-control @error('no_rekening') is-invalid @enderror"
-                                               name="no_rekening" value="{{ old('no_rekening', $user->rekening->no_rekening) }}">
-                                    @endif
-
-                                    @error('no_rekening')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </td>
-                                <th scope="row" class="ps-5"><label for="noTelp" class="form-label">No. Telepon</label></th>
-                                <td class="px-2">:</td>
-                                <td class="py-2">
                                     <input type="number" class="form-control @error('noTelp') is-invalid @enderror"
                                            name="noTelp" value="0{{ $user->noTelp }}">
                                     @error('noTelp')

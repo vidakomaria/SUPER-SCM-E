@@ -52,6 +52,7 @@ class StatusPesananSeeder extends Seeder
         ]);
         StatusPesanan::create([
             'status'        => 'pengambilan',
+            'keterangan'    => ''
         ]);
     }
 }

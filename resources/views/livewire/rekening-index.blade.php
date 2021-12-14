@@ -37,6 +37,7 @@
                 </td>
             </tr>
         </table>
-        <button wire:click="edit" class="btn btn-add">{{ $btn }}</button>
+        <button wire:click="edit" class="btn btn-warning" {{ $btnEdit }}>Edit</button>
+        <button wire:click="save" class="btn btn-add" {{ $btnSave }}>Save</button>
     </div>
 </div>
